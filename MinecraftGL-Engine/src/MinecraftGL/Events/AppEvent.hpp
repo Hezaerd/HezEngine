@@ -9,12 +9,10 @@ namespace MinecraftGL
 	{
 	public:
 		WindowResizeEvent(unsigned int pWidth, unsigned int pHeight)
-			: m_Width(pWidth), m_Height(pHeight)
-		{
-		}
+			: m_Width(pWidth), m_Height(pHeight) {}
 
-		inline unsigned int GetWidth() const { return m_Width; }
-		inline unsigned int GetHeight() const { return m_Height; }
+		unsigned int GetWidth() const { return m_Width; }
+		unsigned int GetHeight() const { return m_Height; }
 
 		std::string ToString() const override
 		{

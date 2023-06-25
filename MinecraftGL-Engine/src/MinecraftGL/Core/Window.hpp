@@ -38,8 +38,11 @@ namespace MinecraftGL
 		unsigned int GetWidth() const { return m_Data.Width; }
 		unsigned int GetHeight() const { return m_Data.Height; }
 
+		void SetEventCallback(const EventCallbackFn& pCallback) { m_Data.EventCallback = pCallback; }
 		void SetVSync(bool pEnabled);
 		bool IsVSync() const;
+
+		static Scope<Window> Create(const WindowData& pData = WindowData());
 
 	private:
 		void Init(const WindowData& pData);

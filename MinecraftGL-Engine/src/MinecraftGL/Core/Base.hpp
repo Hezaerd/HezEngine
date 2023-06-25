@@ -9,6 +9,9 @@
 
 #define BIT(x) (1 << x)
 
+// Maybe change this to a lambda?
+#define MGL_BIND_EVENT_FN(fn) std::bind(&fn, this, std::placeholders::_1)
+
 namespace MinecraftGL
 {
 	template<typename T>

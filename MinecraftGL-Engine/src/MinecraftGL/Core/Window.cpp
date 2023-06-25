@@ -10,6 +10,11 @@ namespace MinecraftGL
 		MGL_CORE_ERROR("GLFW Error ({0}): {1}", pError, pDescription);
 	}
 
+	Scope<Window> Window::Create(const WindowData& pData)
+	{
+		return CreateScope<Window>(pData);
+	}
+
 	Window::Window(const WindowData& pData)
 	{
 		Init(pData);

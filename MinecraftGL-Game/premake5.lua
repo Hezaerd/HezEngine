@@ -16,7 +16,7 @@ project "MinecraftGL-Game"
     includedirs
     {
         "%{wks.location}/MinecraftGL-Engine/vendor/spdlog/include",
-        "%{wks.location}/MinecraftGL-Engine/vendor",
+        "%{wks.location}/MinecraftGL-Engine/vendor/glfw/include",
         "%{wks.location}/MinecraftGL-Engine/src"
     }
 
