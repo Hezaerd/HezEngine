@@ -21,6 +21,7 @@ project "MinecraftGL-Engine"
     includedirs
     {
         "src",
+        "vendor/spdlog/include",
         "%{IncludeDir.Glad}",
         "%{IncludeDir.GLFW}",
         "%{IncludeDir.stb_image}",
@@ -37,6 +38,11 @@ project "MinecraftGL-Engine"
 
     filter "system:windows"
         systemversion "latest"
+
+        defines
+        {
+            "MGL_PLATFORM_WINDOWS"
+        }
 
     filter "configurations:Debug"
         defines "MGL_DEBUG"
