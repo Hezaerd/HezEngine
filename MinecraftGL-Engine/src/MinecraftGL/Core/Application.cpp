@@ -25,15 +25,37 @@ namespace MinecraftGL
 		eventHandler.Dispatch<WindowCloseEvent>(MGL_BIND_EVENT_FN(Application::OnWindowClose));
 		eventHandler.Dispatch<WindowResizeEvent>(MGL_BIND_EVENT_FN(Application::OnWindowResize));
 
-		//MGL_CORE_TRACE(pEvent.ToString());
+		for (auto it = m_LayerStack.end(); it != m_LayerStack.begin();)
+		{
+			(*--it)->OnEvent(pEvent);
+			if (pEvent.Handled)
+				break;
+		}
+	}
+
+	void Application::PushLayer(Layer* pLayer)
+	{
+		m_LayerStack.PushLayer(pLayer);
+	}
+
+	void Application::PushOverlay(Layer* pLayer)
+	{
+		m_LayerStack.PushOverlay(pLayer);
 	}
 
 	void Application::Run()
 	{
 		while (m_Running)
 		{
-			glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
-			glClear(GL_COLOR_BUFFER_BIT);
+			if (!m_Minimized)
+			{
+				for (Layer* layer : m_LayerStack)
+					layer->OnUpdate();
+
+				glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+				glClear(GL_COLOR_BUFFER_BIT);
+			}
+
 			m_Window->OnUpdate();
 		}
 	}

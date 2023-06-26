@@ -17,6 +17,7 @@ project "MinecraftGL-Game"
     {
         "%{wks.location}/MinecraftGL-Engine/vendor/spdlog/include",
         "%{wks.location}/MinecraftGL-Engine/vendor/glfw/include",
+        "%{wks.location}/MinecraftGL-Engine/vendor/glad/include",
         "%{wks.location}/MinecraftGL-Engine/src"
     }
 
@@ -27,6 +28,12 @@ project "MinecraftGL-Game"
 
     filter "system:windows"
         systemversion "latest"
+
+        defines
+        {
+            "MGL_PLATFORM_WINDOWS",
+            "GLFW_INCLUDE_NONE"
+        }
 
     filter "configurations:Debug"
         defines "MGL_DEBUG"

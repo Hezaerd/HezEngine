@@ -28,19 +28,23 @@ namespace MinecraftGL
 
 	void Window::Init(const WindowData& pData)
 	{
+		int success;
+
 		m_Data.Title = pData.Title;
 		m_Data.Width = pData.Width;
 		m_Data.Height = pData.Height;
 
 		MGL_CORE_INFO("Creating window {0} ({1}, {2})", m_Data.Title, m_Data.Width, m_Data.Height);
 
-		int success = glfwInit();
+		success = glfwInit();
 		MGL_CORE_ASSERT(success, "Failed to initialize GLFW!");
 		glfwSetErrorCallback(GLFWErrorCallback);
 
 		m_Window = glfwCreateWindow((int)m_Data.Width, (int)m_Data.Height, m_Data.Title.c_str(), nullptr, nullptr);
 
 		glfwMakeContextCurrent(m_Window);
+		success = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
+		MGL_CORE_ASSERT(success, "Failed to initialize Glad!");
 		glfwSetWindowUserPointer(m_Window, &m_Data);
 		SetVSync(true);
 
