@@ -9,7 +9,11 @@ namespace MinecraftGL
 	{
 		None = 0,
 		// Window events
-		WindowClose, WindowResize
+		WindowClose, WindowResize,
+		// Keyboard events
+		KeyPressed, KeyReleased, KeyTyped,
+		// Mouse events
+		MouseButtonPressed, MouseButtonReleased, MouseMoved, MouseScrolled
 	};
 
 	enum EventCategory
