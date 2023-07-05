@@ -18,6 +18,7 @@ project "MinecraftGL-Game"
         "%{wks.location}/MinecraftGL-Engine/vendor/spdlog/include",
         "%{wks.location}/MinecraftGL-Engine/vendor/glfw/include",
         "%{wks.location}/MinecraftGL-Engine/vendor/glad/include",
+        "%{wks.location}/MinecraftGL-Engine/vendor/MGLMaths",
         "%{wks.location}/MinecraftGL-Engine/src"
     }
 

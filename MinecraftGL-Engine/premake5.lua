@@ -25,7 +25,8 @@ project "MinecraftGL-Engine"
         "%{IncludeDir.Glad}",
         "%{IncludeDir.GLFW}",
         "%{IncludeDir.stb_image}",
-        "%{IncludeDir.ImGui}"
+        "%{IncludeDir.ImGui}",
+        "%{IncludeDir.MGLMaths}"
     }
 
     links
@@ -33,6 +34,7 @@ project "MinecraftGL-Engine"
         "Glad",
         "GLFW",
         "ImGui",
+        "MGLMaths",
         "opengl32.lib"
     }
 

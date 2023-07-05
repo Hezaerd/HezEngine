@@ -21,6 +21,7 @@ group "Dependencies"
     include "MinecraftGL-Engine/vendor/Glad"
     include "MinecraftGL-Engine/vendor/GLFW"
     include "MinecraftGL-Engine/vendor/imgui"
+    include "MinecraftGL-Engine/vendor/MGLMaths"
 group ""
 
 group "Core"
