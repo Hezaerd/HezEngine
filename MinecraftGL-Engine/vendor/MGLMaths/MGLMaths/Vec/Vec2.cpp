@@ -10,6 +10,7 @@ namespace MGLMaths
 	Vec2f::Vec2f(float pX) : x(pX), y(pX) {}
 	Vec2f::Vec2f() : x(0), y(0) {}
 	Vec2f::Vec2f(const Vec2f& pOther) : x(pOther.x), y(pOther.y) {}
+	Vec2f Vec2f::operator=(const Vec2f& pOther) { x = pOther.x; y = pOther.y; return *this; }
 
 	const Vec2f Vec2f::Zero(0.f, 0.f);
 	const Vec2f Vec2f::One(1.f, 1.f);

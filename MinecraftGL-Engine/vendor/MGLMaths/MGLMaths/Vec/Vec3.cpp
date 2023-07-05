@@ -10,6 +10,7 @@ namespace MGLMaths
 	Vec3f::Vec3f(float pX) : x(pX), y(pX), z(pX) {}
 	Vec3f::Vec3f() : x(0), y(0), z(0) {}
 	Vec3f::Vec3f(const Vec3f& pOther) : x(pOther.x), y(pOther.y), z(pOther.z) {}
+	Vec3f Vec3f::operator=(const Vec3f& pOther) { x = pOther.x; y = pOther.y; z = pOther.z; return *this; }
 
 	const Vec3f Vec3f::Zero(0.f, 0.f, 0.f);
 	const Vec3f Vec3f::One(1.f, 1.f, 1.f);

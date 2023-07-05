@@ -14,6 +14,7 @@ namespace MGLMaths
 		Vec2f(float pX);
 		Vec2f();
 		Vec2f(const Vec2f& pOther);
+		Vec2f operator=(const Vec2f& pOther);
 
 		static const Vec2f Zero;
 		static const Vec2f One;
