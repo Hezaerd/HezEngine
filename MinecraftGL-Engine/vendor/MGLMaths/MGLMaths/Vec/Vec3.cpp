@@ -1,8 +1,8 @@
 #include "Vec3.hpp"
 #include <cmath>
 
-#include <string>
 #include <stdexcept>
+#include <string>
 
 namespace MGLMaths
 {
