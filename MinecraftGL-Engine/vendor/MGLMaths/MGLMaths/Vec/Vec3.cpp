@@ -21,6 +21,26 @@ namespace MGLMaths
 	const Vec3f Vec3f::Forward(0.f, 0.f, 1.f);
 	const Vec3f Vec3f::Backward(0.f, 0.f, -1.f);
 
+	float Vec3f::operator[](int pIndex) const
+	{
+		if (pIndex < 0 || pIndex > 2)
+			throw std::out_of_range("Invalid index : " + std::to_string(pIndex) + "is out of range.");
+
+		if (pIndex == 0) return x;
+		if (pIndex == 1) return y;
+		return z;
+	}
+
+	float& Vec3f::operator[](int pIndex)
+	{
+		if (pIndex < 0 || pIndex > 2)
+			throw std::out_of_range("Invalid index : " + std::to_string(pIndex) + "is out of range.");
+
+		if (pIndex == 0) return x;
+		if (pIndex == 1) return y;
+		return z;
+	}
+
 	Vec3f Vec3f::operator+(const Vec3f& pOther) const { return Vec3f(x + pOther.x, y + pOther.y, z + pOther.z); }
 	Vec3f Vec3f::operator-(const Vec3f& pOther) const { return Vec3f(x - pOther.x, y - pOther.y, z - pOther.z); }
 	Vec3f Vec3f::operator*(const Vec3f& pOther) const { return Vec3f(x * pOther.x, y * pOther.y, z * pOther.z); }
@@ -75,12 +95,6 @@ namespace MGLMaths
 
 	bool Vec3f::operator==(const Vec3f& pOther) const { return x == pOther.x && y == pOther.y && z == pOther.z; }
 	bool Vec3f::operator!=(const Vec3f& pOther) const { return x != pOther.x || y != pOther.y || z != pOther.z; }
-
-	std::ostream& operator<<(std::ostream& pStream, const Vec3f& pVec)
-	{
-		pStream << "Vec3f(" << pVec.x << ", " << pVec.y << ", " << pVec.z << ")";
-		return pStream;
-	}
 
 	std::string Vec3f::ToString() const
 	{
@@ -137,21 +151,6 @@ namespace MGLMaths
 		);
 	}
 
-	Vec3f Vec3f::Project(const Vec3f& pVec, const Vec3f& pOnNormal)
-	{
-		float aDotb = Dot(pVec, pOnNormal);
-		float bDotb = Dot(pOnNormal, pOnNormal);
-
-		if (bDotb == 0.0f) return Vec3f::Zero;
-
-		return pOnNormal * (aDotb / bDotb);
-	}
-
-	Vec3f Vec3f::Reflect(const Vec3f& pVec, const Vec3f& pNormal)
-	{
-		return pVec - (pNormal * (2.0f * Dot(pVec, pNormal)));
-	}
-
 	float Vec3f::sqrMagnitude()
 	{
 		return sqrMagnitude(*this);
@@ -195,15 +194,5 @@ namespace MGLMaths
 	void Vec3f::Cross(const Vec3f& pRight)
 	{
 		*this = Cross(*this, pRight);
-	}
-
-	void Vec3f::Project(const Vec3f& pOnNormal)
-	{
-		*this = Project(*this, pOnNormal);
-	}
-
-	void Vec3f::Reflect(const Vec3f& pNormal)
-	{
-		*this = Reflect(*this, pNormal);
 	}
 }

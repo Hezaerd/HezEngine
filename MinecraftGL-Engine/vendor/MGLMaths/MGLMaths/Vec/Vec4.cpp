@@ -16,6 +16,28 @@ namespace MGLMaths
 	const Vec4f Vec4f::Zero(0.f, 0.f, 0.f, 0.f);
 	const Vec4f Vec4f::One(1.f, 1.f, 1.f, 1.f);
 
+	float Vec4f::operator[](int pIndex) const
+	{
+		if (pIndex < 0 || pIndex > 3)
+			throw std::out_of_range("Invalid index : " + std::to_string(pIndex) + "is out of range.");
+
+		if (pIndex == 0) return x;
+		if (pIndex == 1) return y;
+		if (pIndex == 2) return z;
+		return w;
+	}
+
+	float& Vec4f::operator[](int pIndex)
+	{
+		if (pIndex < 0 || pIndex > 3)
+			throw std::out_of_range("Invalid index : " + std::to_string(pIndex) + "is out of range.");
+
+		if (pIndex == 0) return x;
+		if (pIndex == 1) return y;
+		if (pIndex == 2) return z;
+		return w;
+	}
+
 	Vec4f Vec4f::operator+(const Vec4f& pOther) const { return Vec4f(x + pOther.x, y + pOther.y, z + pOther.z, w + pOther.w); }
 	Vec4f Vec4f::operator-(const Vec4f& pOther) const { return Vec4f(x - pOther.x, y - pOther.y, z - pOther.z, w - pOther.w); }
 	Vec4f Vec4f::operator*(const Vec4f& pOther) const { return Vec4f(x * pOther.x, y * pOther.y, z * pOther.z, w * pOther.w); }
@@ -63,12 +85,6 @@ namespace MGLMaths
 	bool Vec4f::operator==(const Vec4f& pOther) const { return x == pOther.x && y == pOther.y && z == pOther.z && w == pOther.w; }
 	bool Vec4f::operator!=(const Vec4f& pOther) const { return x != pOther.x || y != pOther.y || z != pOther.z || w != pOther.w; }
 
-	std::ostream& operator<<(std::ostream& pStream, const Vec4f& pVec)
-	{
-		pStream << "Vec4f(" << pVec.x << ", " << pVec.y << ", " << pVec.z << ", " << pVec.w << ")";
-		return pStream;
-	}
-
 	std::string Vec4f::ToString() const
 	{
 		return "Vec4f(" + std::to_string(x) + ", " + std::to_string(y) + ", " + std::to_string(z) + ", " + std::to_string(w) + ")";
@@ -114,26 +130,9 @@ namespace MGLMaths
 		return pLeft + (pRight - pLeft) * pTime;
 	}
 
-	Vec4f Vec4f::Slerp(const Vec4f& pLeft, const Vec4f& pRight, float pTime)
+	Vec4f Vec4f::NLerp(const Vec4f& pLeft, const Vec4f& pRight, float pTime)
 	{
-		float dot = Dot(pLeft, pRight);
-		dot = std::clamp(dot, -1.0f, 1.0f);
-
-		float theta = acos(dot) * pTime;
-		Vec4f relativeVec = pRight - pLeft * dot;
-		relativeVec = Normalize(relativeVec);
-
-		return ((pLeft * cos(theta)) + (relativeVec * sin(theta)));
-	}
-
-	Vec4f Vec4f::Project(const Vec4f& pVec, const Vec4f& pOnNormal)
-	{
-		return pOnNormal * (Dot(pVec, pOnNormal) / sqrMagnitude(pOnNormal));
-	}
-
-	Vec4f Vec4f::Reflect(const Vec4f& pVec, const Vec4f& pNormal)
-	{
-		return pVec - (pNormal * 2 * Dot(pVec, pNormal));
+		return Normalize(Lerp(pLeft, pRight, pTime));
 	}
 
 	float Vec4f::sqrMagnitude()
@@ -176,18 +175,8 @@ namespace MGLMaths
 		return Lerp(*this, pOther, pTime);
 	}
 
-	Vec4f Vec4f::Slerp(const Vec4f& pOther, float pTime)
+	Vec4f Vec4f::NLerp(const Vec4f& pOther, float pTime)
 	{
-		return Slerp(*this, pOther, pTime);
-	}
-
-	Vec4f Vec4f::Project(const Vec4f& pOnNormal)
-	{
-		return Project(*this, pOnNormal);
-	}
-
-	Vec4f Vec4f::Reflect(const Vec4f& pNormal)
-	{
-		return Reflect(*this, pNormal);
+		return NLerp(*this, pOther, pTime);
 	}
 }

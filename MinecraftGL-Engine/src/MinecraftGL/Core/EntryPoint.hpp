@@ -5,7 +5,7 @@
 
 extern MinecraftGL::Application* MinecraftGL::CreateApplication();
 
-int main(int argc, char** argv)
+int main(int /*argc*/, char** /*argv*/)
 {
 	MinecraftGL::Log::Init();
 	MGL_CORE_WARN("Initialized Log!");

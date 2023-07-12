@@ -2,6 +2,8 @@
 #include "MinecraftGL/Core/Application.hpp"
 #include "MinecraftGL/Core/Log.hpp"
 
+#include "MGLMaths/MGLMaths.hpp"
+
 namespace MinecraftGL
 {
 	Application* Application::s_Instance = nullptr;
@@ -45,6 +47,8 @@ namespace MinecraftGL
 
 	void Application::Run()
 	{
+		MGLMaths::Vec3f vec(1.0f, 2.0f, 3.0f);
+
 		while (m_Running)
 		{
 			if (!m_Minimized)
@@ -60,13 +64,13 @@ namespace MinecraftGL
 		}
 	}
 
-	bool Application::OnWindowClose(WindowCloseEvent& pEvent)
+	bool Application::OnWindowClose(WindowCloseEvent& /*pEvent*/)
 	{
 		m_Running = false;
 		return true;
 	}
 
-	bool Application::OnWindowResize(WindowResizeEvent& pEvent)
+	bool Application::OnWindowResize(WindowResizeEvent& /*pEvent*/)
 	{
 		return true;
 	}

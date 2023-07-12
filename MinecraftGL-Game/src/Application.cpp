@@ -12,7 +12,7 @@ public:
 	{
 	}
 
-	void OnEvent(MinecraftGL::Event& pEvent) override
+	void OnEvent(MinecraftGL::Event& /*pEvent*/) override
 	{
 	}
 };

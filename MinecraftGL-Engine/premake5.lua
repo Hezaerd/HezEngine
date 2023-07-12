@@ -38,6 +38,8 @@ project "MinecraftGL-Engine"
         "opengl32.lib"
     }
 
+    warnings "Extra"
+
     filter "system:windows"
         systemversion "latest"
 

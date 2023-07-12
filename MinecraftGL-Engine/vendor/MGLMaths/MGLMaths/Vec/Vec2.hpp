@@ -42,7 +42,6 @@ namespace MGLMaths
 		bool operator==(const Vec2f& pOther) const;
 		bool operator!=(const Vec2f& pOther) const;
 
-		std::ostream& operator<<(std::ostream& pStream) const;
 		std::string ToString() const;
 
 		static float sqrMagnitude(const Vec2f& pVec); // sqrMagnitude == sqrLength

@@ -27,6 +27,8 @@ project "MinecraftGL-Game"
         "MinecraftGL-Engine"
     }
 
+    warnings "Extra"
+
     filter "system:windows"
         systemversion "latest"
 

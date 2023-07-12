@@ -68,12 +68,6 @@ namespace MGLMaths
 	bool Vec2f::operator==(const Vec2f& pOther) const { return x == pOther.x && y == pOther.y; }
 	bool Vec2f::operator!=(const Vec2f& pOther) const { return x != pOther.x || y != pOther.y; }
 
-	std::ostream& operator<<(std::ostream& pStream, const Vec2f& pVec)
-	{
-		pStream << "Vec2F(" << pVec.x << ", " << pVec.y << ")";
-		return pStream;
-	}
-
 	std::string Vec2f::ToString() const
 	{
 		return "Vec2f(" + std::to_string(x) + ", " + std::to_string(y) + ")";

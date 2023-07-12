@@ -13,6 +13,13 @@ project "MGLMaths"
 		"MGLMaths/**.cpp"
 	}
 
+	includedirs
+	{
+		"MGLMaths"
+	}
+
+    warnings "Extra"
+
 	filter "system:windows"
 		systemversion "latest"
 

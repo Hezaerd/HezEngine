@@ -19,6 +19,9 @@ namespace MGLMaths
 		static const Vec4f Zero;
 		static const Vec4f One;
 
+		float operator[](int pIndex) const;
+		float& operator[](int pIndex);
+
 		Vec4f operator+(const Vec4f& pOther) const;
 		Vec4f operator-(const Vec4f& pOther) const;
 		Vec4f operator*(const Vec4f& pOther) const;
@@ -42,7 +45,6 @@ namespace MGLMaths
 		bool operator==(const Vec4f& pOther) const;
 		bool operator!=(const Vec4f& pOther) const;
 
-		std::ostream& operator<<(std::ostream& pStream) const;
 		std::string ToString() const;
 
 		static float sqrMagnitude(const Vec4f& pVec);
@@ -54,9 +56,7 @@ namespace MGLMaths
 
 		static Vec4f Normalize(const Vec4f& pVec);
 		static Vec4f Lerp(const Vec4f& pLeft, const Vec4f& pRight, float pTime);
-		static Vec4f Slerp(const Vec4f& pLeft, const Vec4f& pRight, float pTime);
-		static Vec4f Project(const Vec4f& pVec, const Vec4f& pOnNormal);
-		static Vec4f Reflect(const Vec4f& pVec, const Vec4f& pNormal);
+		static Vec4f NLerp(const Vec4f& pLeft, const Vec4f& pRight, float pTime);
 
 		float sqrMagnitude();
 		float Magnitude();
@@ -67,8 +67,6 @@ namespace MGLMaths
 
 		Vec4f Normalize();
 		Vec4f Lerp(const Vec4f& pOther, float pTime);
-		Vec4f Slerp(const Vec4f& pOther, float pTime);
-		Vec4f Project(const Vec4f& pOnNormal);
-		Vec4f Reflect(const Vec4f& pNormal);
+		Vec4f NLerp(const Vec4f& pOther, float pTime);
 	};
 }
