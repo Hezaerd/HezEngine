@@ -57,5 +57,7 @@ namespace MGLMaths
         void Rotate(const Vec3f& pRotation);
         void Scale(const Vec3f& pScale);
         void Translate(const Vec3f& pTranslate);
+
+        const float* GetPointer() const;
     };
 }

@@ -77,5 +77,7 @@ namespace MGLMaths
         void Normalize();
         void Lerp(const Vec3f& pEnd, float pDelta);
         void Cross(const Vec3f& pRight);
+
+        const float* GetPointer() const;
     };
 }

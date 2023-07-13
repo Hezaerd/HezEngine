@@ -3,76 +3,80 @@
 #include "MinecraftGL/Core/Log.hpp"
 
 #include "MGLMaths/MGLMaths.hpp"
+#include "MinecraftGL/Renderer/Shader.hpp"
 
 namespace MinecraftGL
 {
-	Application* Application::s_Instance = nullptr;
+    Application* Application::s_Instance = nullptr;
 
-	Application::Application()
-	{
-		MGL_CORE_ASSERT(!s_Instance, "Application already exists!");
-		s_Instance = this;
+    Application::Application()
+    {
+        MGL_CORE_ASSERT(!s_Instance, "Application already exists!");
+        s_Instance = this;
 
-		m_Window = Window::Create();
-		m_Window->SetEventCallback(MGL_BIND_EVENT_FN(Application::OnEvent));
-	}
+        m_Window = Window::Create();
+        m_Window->SetEventCallback(MGL_BIND_EVENT_FN(Application::OnEvent));
+    }
 
-	Application::~Application()
-	{
-		MGL_CORE_INFO("Application destroyed.");
-	}
+    Application::~Application()
+    {
+        MGL_CORE_INFO("Application destroyed.");
+    }
 
-	void Application::OnEvent(Event& pEvent)
-	{
-		EventDispatcher eventHandler(pEvent);
-		eventHandler.Dispatch<WindowCloseEvent>(MGL_BIND_EVENT_FN(Application::OnWindowClose));
-		eventHandler.Dispatch<WindowResizeEvent>(MGL_BIND_EVENT_FN(Application::OnWindowResize));
+    void Application::OnEvent(Event& pEvent)
+    {
+        EventDispatcher eventHandler(pEvent);
+        eventHandler.Dispatch<WindowCloseEvent>(MGL_BIND_EVENT_FN(Application::OnWindowClose));
+        eventHandler.Dispatch<WindowResizeEvent>(MGL_BIND_EVENT_FN(Application::OnWindowResize));
 
-		for (auto it = m_LayerStack.end(); it != m_LayerStack.begin();)
-		{
-			(*--it)->OnEvent(pEvent);
-			if (pEvent.Handled)
-				break;
-		}
-	}
+        for (auto it = m_LayerStack.end(); it != m_LayerStack.begin();)
+        {
+            (*--it)->OnEvent(pEvent);
+            if (pEvent.Handled)
+                break;
+        }
+    }
 
-	void Application::PushLayer(Layer* pLayer)
-	{
-		m_LayerStack.PushLayer(pLayer);
-	}
+    void Application::PushLayer(Layer* pLayer)
+    {
+        m_LayerStack.PushLayer(pLayer);
+    }
 
-	void Application::PushOverlay(Layer* pLayer)
-	{
-		m_LayerStack.PushOverlay(pLayer);
-	}
+    void Application::PushOverlay(Layer* pLayer)
+    {
+        m_LayerStack.PushOverlay(pLayer);
+    }
 
-	void Application::Run()
-	{
-		while (m_Running)
-		{
-			if (!m_Minimized)
-			{
-				for (Layer* layer : m_LayerStack)
-					layer->OnUpdate();
+    void Application::Run()
+    {
+        //current dir = MinecraftGL-Game
+        Shader shader("basicShader", "shaders/vertex.vert", "shaders/fragment.frag");
 
-				glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
-				glClear(GL_COLOR_BUFFER_BIT);
-			}
+        while (m_Running)
+        {
+            if (!m_Minimized)
+            {
+                for (Layer* layer : m_LayerStack)
+                    layer->OnUpdate();
 
-			m_Window->OnUpdate();
-		}
-	}
+                glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+                glClear(GL_COLOR_BUFFER_BIT);
+            }
 
-	bool Application::OnWindowClose(WindowCloseEvent& /*pEvent*/)
-	{
-		MGL_CORE_INFO("Window closed.");
+            m_Window->OnUpdate();
+        }
+    }
 
-		m_Running = false;
-		return true;
-	}
+    bool Application::OnWindowClose(WindowCloseEvent& /*pEvent*/)
+    {
+        MGL_CORE_INFO("Window closed.");
 
-	bool Application::OnWindowResize(WindowResizeEvent& pEvent)
-	{
-		return true;
-	}
+        m_Running = false;
+        return true;
+    }
+
+    bool Application::OnWindowResize(WindowResizeEvent& /*pEvent*/)
+    {
+        return true;
+    }
 }
