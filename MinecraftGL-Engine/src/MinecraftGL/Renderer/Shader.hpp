@@ -7,7 +7,6 @@ namespace MinecraftGL
     class Shader
     {
     public:
-        /*Shader(const std::string& pFilePath);*/
         Shader(const std::string& pName, const std::string& pVertexSrc, const std::string& pFragmentSrc);
         ~Shader() = default;
 
