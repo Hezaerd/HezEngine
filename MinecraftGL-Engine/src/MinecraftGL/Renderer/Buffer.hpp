@@ -54,7 +54,5 @@ namespace MinecraftGL
 
     public:
         unsigned int mVertexAttributeBufferID;
-        std::vector<struct Vertex> mVertexAttributeBufferData;
-        std::vector<uint32_t> m_IndexBuffer;
     };
 };

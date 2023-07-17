@@ -1,7 +1,7 @@
 #include "mglpch.hpp"
 #include "Buffer.hpp"
 #include "Renderer.hpp"
-#include "Model.hpp"
+#include "MinecraftGL/Scene/Model.hpp"
 
 namespace MinecraftGL
 {
@@ -57,15 +57,15 @@ namespace MinecraftGL
         glBindVertexArray(mVertexAttributeBufferID);
 
         // position attribute
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)(offsetof(Vertex, m_Position)));
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)(offsetof(Vertex, mPosition)));
         glEnableVertexAttribArray(0);
 
         // texture coord attribute
-        glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)(offsetof(Vertex, m_TextCoords)));
+        glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)(offsetof(Vertex, mTexCoords)));
         glEnableVertexAttribArray(1);
 
         // normal  attribute
-        glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)(offsetof(Vertex, m_Normal)));
+        glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)(offsetof(Vertex, mNormal)));
         glEnableVertexAttribArray(2);
 
         glBindBuffer(GL_ARRAY_BUFFER, 0);
