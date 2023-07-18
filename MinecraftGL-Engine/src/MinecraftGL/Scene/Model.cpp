@@ -9,7 +9,8 @@
 
 namespace MinecraftGL
 {
-    Model::Model(const std::string& pPath)
+    Model::Model(const std::string& pPath, MGLMaths::Vec3f& pPosition, MGLMaths::Vec3f& pRotation, MGLMaths::Vec3f& pScale)
+        : mPosition(pPosition), mRotation(pRotation), mScale(pScale)
     {
         loadModel(pPath);
         MGL_CORE_INFO("Model loaded");
@@ -70,6 +71,11 @@ namespace MinecraftGL
                 fgets(stupidBuffer, 1000, file);
             }
         }
+    }
+
+    MGLMaths::Mat4f Model::getModelMatrix()
+    {
+        return MGLMaths::Mat4f::Transform(mPosition, mRotation, mScale);
     }
 
     void Model::Draw()

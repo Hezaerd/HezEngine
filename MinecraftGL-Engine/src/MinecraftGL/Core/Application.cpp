@@ -5,6 +5,7 @@
 #include "MGLMaths/MGLMaths.hpp"
 #include "MinecraftGL/Renderer/Shader.hpp"
 #include "MinecraftGL/Scene/Model.hpp"
+#include "MinecraftGL/Scene/Camera.hpp"
 
 namespace MinecraftGL
 {
@@ -52,20 +53,33 @@ namespace MinecraftGL
     {
         //current dir = MinecraftGL-Game
         Shader shader("basicShader", "shaders/vertex.vert", "shaders/fragment.frag");
-        Model model("assets/models/Cube.obj");
-
+        Model model("assets/models/Cube.obj", MGLMaths::Vec3f(0), MGLMaths::Vec3f(0), MGLMaths::Vec3f(1));
+        Camera cam(MGLMaths::Vec3f(0.0f, 0.0f, 3.0f), MGLMaths::Vec3f::Up);
         while (m_Running)
         {
+            CalculateDeltaTime();
+            CalculateMouseOffset();
             if (!m_Minimized)
             {
                 for (Layer* layer : m_LayerStack)
                     layer->OnUpdate();
 
                 //TODO: Change to Draw Func and pass it the object to draw ??? (maybe)
+                //TODO: Check using renderdoc if the model is drawn correctly
+                cam.ProcessMouseInput(mDeltaTime, mOffsetX, mOffsetY);
+                {
+                    shader.Bind();
+                    //send MVP
+                    MGLMaths::Mat4f MVP = model.getModelMatrix() * cam.GetViewMatrix() * cam.GetProjectionMatrix();
+                    shader.SetMat4("MVP", MVP);
+                    //send model
+                    shader.SetMat4("model", model.getModelMatrix());
+                    //send normal matrix
+                    shader.SetMat4("normalMatrix", model.getModelMatrix().Inverse().Transpose());
 
-                shader.Bind();
-                model.Draw();
-                shader.Unbind();
+                    model.Draw();
+                    shader.Unbind();
+                }
 
                 glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
                 glClear(GL_COLOR_BUFFER_BIT);
@@ -86,5 +100,30 @@ namespace MinecraftGL
     bool Application::OnWindowResize(WindowResizeEvent& /*pEvent*/)
     {
         return true;
+    }
+
+    void Application::CalculateDeltaTime()
+    {
+        mCurrentTime = std::chrono::steady_clock::now();
+        mDeltaTime = std::chrono::duration<float>(mCurrentTime - mLastTime).count();
+        mLastTime = mCurrentTime;
+    }
+
+    void Application::CalculateMouseOffset()
+    {
+        m_Window->ProcessMousePos(mMouseX, mMouseY);
+
+        if (mFirstMouse)
+        {
+            mLastX = mMouseX;
+            mLastY = mMouseY;
+            mFirstMouse = false;
+        }
+
+        mOffsetX = mMouseX - mLastX;
+        mOffsetY = mLastY - mMouseY;
+
+        mLastX = mMouseX;
+        mLastY = mMouseY;
     }
 }

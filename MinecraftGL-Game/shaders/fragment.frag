@@ -1,6 +1,14 @@
 #version 330 core
-out vec4 FragColor;
-void main()
+
+in VS_OUT {
+    vec3 FragPos;
+    vec3 Normal;
+    vec2 TexCoords;
+} fs_in;
+
+out vec4 Frament_color
+
+int main()
 {
-   FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);
+	fragment_color = vec4(fs_in.FragPos, 1.0);
 }

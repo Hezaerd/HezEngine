@@ -148,6 +148,18 @@ namespace MinecraftGL
         glfwSwapBuffers(m_Window);
     }
 
+    void Window::ProcessMousePos(float& pXpos, float& pYpos)
+    {
+        double xpos, ypos;
+        glfwGetCursorPos(m_Window, &xpos, &ypos);
+        pXpos = (float)xpos;
+        pYpos = (float)ypos;
+    }
+
+    //void Window::ProcessKeyboardInput()
+    //{
+    //}
+
     void Window::SetVSync(bool pEnabled)
     {
         if (pEnabled)
