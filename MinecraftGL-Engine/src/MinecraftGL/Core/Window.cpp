@@ -16,6 +16,11 @@ namespace MinecraftGL
         return CreateScope<Window>(pData);
     }
 
+    float Window::GetAspectRatio() const
+    {
+        return (float)m_Data.Width / (float)m_Data.Height;
+    }
+
     Window::Window(const WindowData& pData)
     {
         Init(pData);

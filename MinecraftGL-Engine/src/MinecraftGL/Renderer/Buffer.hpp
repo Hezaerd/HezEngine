@@ -26,17 +26,9 @@ namespace MinecraftGL
     class VertexBuffer : public IBuffer
     {
     public:
-        VertexBuffer(unsigned int& pID, const void* pData, const unsigned int pSize);
+        VertexBuffer(const void* pData, const unsigned int pSize);
+        VertexBuffer() = default;
         ~VertexBuffer();
-
-        void SetData(const void* pData, const unsigned int pSize) override;
-    };
-
-    class IndexBuffer : public IBuffer
-    {
-    public:
-        IndexBuffer(unsigned int& pID, const void* pData, const unsigned int pSize);
-        ~IndexBuffer();
 
         void SetData(const void* pData, const unsigned int pSize) override;
     };
@@ -51,6 +43,7 @@ namespace MinecraftGL
 
         void Bind() const;
         void Unbind() const;
+        void Init();
 
     public:
         unsigned int mVertexAttributeBufferID;

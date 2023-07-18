@@ -8,31 +8,31 @@
 
 namespace MinecraftGL
 {
-	class Application
-	{
-	public:
-		Application();
-		virtual ~Application();
+    class Application
+    {
+    public:
+        Application();
+        virtual ~Application();
 
-		void Run();
-		void OnEvent(Event& pEvent);
+        void Run();
+        void OnEvent(Event& pEvent);
 
-		void PushLayer(Layer* pLayer);
-		void PushOverlay(Layer* pLayer);
+        void PushLayer(Layer* pLayer);
+        void PushOverlay(Layer* pLayer);
 
-	private:
-		bool OnWindowClose(WindowCloseEvent& pEvent);
-		bool OnWindowResize(WindowResizeEvent& pEvent);
+    private:
+        bool OnWindowClose(WindowCloseEvent& pEvent);
+        bool OnWindowResize(WindowResizeEvent& pEvent);
 
-	private:
-		Scope<Window> m_Window;
-		LayerStack m_LayerStack;
+    private:
+        Scope<Window> m_Window;
+        LayerStack m_LayerStack;
 
-		bool m_Running = true;
-		bool m_Minimized = false;
+        bool m_Running = true;
+        bool m_Minimized = false;
 
-		static Application* s_Instance;
-	};
+        static Application* s_Instance;
+    };
 
-	Application* CreateApplication();
+    Application* CreateApplication();
 }
