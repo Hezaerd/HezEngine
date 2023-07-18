@@ -21,14 +21,18 @@ namespace MinecraftGL
     class Model
     {
     public:
-        Model(const std::string& pPath);
+        Model(const std::string& pPath, MGLMaths::Vec3f& mPosition, MGLMaths::Vec3f& mRotation, MGLMaths::Vec3f& mScale);
         ~Model() = default;
         void Draw();
 
         void loadModel(const std::string& pPath);
+
+        MGLMaths::Mat4f getModelMatrix();
     public:
         std::vector<Vertex> mVertexBuffer;
         std::vector<uint32_t> mIndexBuffer;
+
+        MGLMaths::Vec3f mPosition, mRotation, mScale;
 
     private:
         VertexBuffer mVbo;

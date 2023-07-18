@@ -40,6 +40,9 @@ namespace MinecraftGL
         unsigned int GetHeight() const { return m_Data.Height; }
 
         void SetEventCallback(const EventCallbackFn& pCallback) { m_Data.EventCallback = pCallback; }
+        void ProcessMousePos(float& pXpos, float& pYpos);
+        void ProcessKeyboardInput();
+
         void SetVSync(bool pEnabled);
         bool IsVSync() const;
 
