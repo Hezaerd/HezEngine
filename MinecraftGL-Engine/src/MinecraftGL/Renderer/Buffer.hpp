@@ -33,6 +33,16 @@ namespace MinecraftGL
         void SetData(const void* pData, const unsigned int pSize) override;
     };
 
+    class IndexBuffer : public IBuffer
+    {
+    public:
+        IndexBuffer(const void* pData, const unsigned int pSize);
+        IndexBuffer() = default;
+        ~IndexBuffer();
+
+        void SetData(const void* pData, const unsigned int pSize) override;
+    };
+
     class VertexAttributeBuffer
     {
     public:

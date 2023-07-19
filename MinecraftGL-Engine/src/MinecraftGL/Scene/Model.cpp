@@ -15,9 +15,10 @@ namespace MinecraftGL
 		loadModel(pPath);
 		MGL_CORE_INFO("Model loaded");
 
-		mVbo.SetData(mVertexBuffer.data(), mVertexBuffer.size());
-		mVao.Init();
-	}
+        mVbo.SetData(mVertexBuffer.data(), mVertexBuffer.size());
+        mEbo.SetData(mIndexBuffer.data(), mIndexBuffer.size());
+        mVao.Init();
+    }
 
 	void Model::loadModel(const std::string& pPath)
 	{
@@ -82,7 +83,7 @@ namespace MinecraftGL
 	{
 		mVao.Bind();
 
-		glDrawArrays(GL_TRIANGLES, 0, (GLsizei)mVertexBuffer.size());
+        glDrawElements(GL_TRIANGLES, mIndexBuffer.size(), GL_UNSIGNED_INT, 0);
 
 		mVao.Unbind();
 	}

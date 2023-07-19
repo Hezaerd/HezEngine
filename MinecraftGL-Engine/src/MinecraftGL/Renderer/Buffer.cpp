@@ -72,4 +72,27 @@ namespace MinecraftGL
         glBindBuffer(GL_ARRAY_BUFFER, 0);
         glBindVertexArray(0);
     }
+
+    IndexBuffer::IndexBuffer(const void* pData, const unsigned int pSize)
+    {
+        mData = pData;
+        mSize = pSize;
+        glGenBuffers(1, &mId);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mId);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, mSize, mData, GL_STATIC_DRAW);
+    }
+
+    IndexBuffer::~IndexBuffer()
+    {
+        glDeleteBuffers(1, &mId);
+    }
+
+    void IndexBuffer::SetData(const void* pData, const unsigned int pSize)
+    {
+        mData = pData;
+        mSize = pSize;
+        glGenBuffers(1, &mId);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mId);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, mSize, mData, GL_STATIC_DRAW);
+    }
 }
