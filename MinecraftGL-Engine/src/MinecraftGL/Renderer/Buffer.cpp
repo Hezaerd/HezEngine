@@ -5,58 +5,26 @@
 
 namespace MinecraftGL
 {
-    VertexBuffer::VertexBuffer(const void* pData, const unsigned int pSize)
+    void Buffer::GenerateBuffer()
     {
-        mData = pData;
-        mSize = pSize;
-        glGenBuffers(1, &mId);
-        glBindBuffer(GL_ARRAY_BUFFER, mId);
-        glBufferData(GL_ARRAY_BUFFER, mSize, mData, GL_STATIC_DRAW);
+        glGenVertexArrays(1, &mVao);
+        glGenBuffers(1, &mVbo);
+        glGenBuffers(1, &mEbo);
     }
 
-    VertexBuffer::~VertexBuffer()
+    void Buffer::BindBuffer(std::vector<Vertex> pVertex, std::vector<uint32_t> pIndices)
     {
-        glDeleteBuffers(1, &mId);
+        glBindVertexArray(mVao);
+
+        glBindBuffer(GL_ARRAY_BUFFER, mVbo);
+        glBufferData(GL_ARRAY_BUFFER, pVertex.size(), pVertex.data(), GL_STATIC_DRAW);
+
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mEbo);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, pIndices.size(), pIndices.data(), GL_STATIC_DRAW);
     }
 
-    void VertexBuffer::SetData(const void* pData, const unsigned int pSize)
+    void Buffer::SetAttribute()
     {
-        mData = pData;
-        mSize = pSize;
-        glGenBuffers(1, &mId);
-        glBindBuffer(GL_ARRAY_BUFFER, mId);
-        glBufferData(GL_ARRAY_BUFFER, mSize, mData, GL_STATIC_DRAW);
-    }
-
-    VertexAttributeBuffer::VertexAttributeBuffer()
-    {
-        Init();
-    }
-
-    VertexAttributeBuffer::~VertexAttributeBuffer()
-    {
-        glDeleteVertexArrays(1, &mVertexAttributeBufferID);
-    }
-
-    void VertexAttributeBuffer::Bind() const
-    {
-        if (mVertexAttributeBufferID == GL_FALSE)
-        {
-            glGenVertexArrays(1, &(GLuint)mVertexAttributeBufferID);
-        }
-        glBindVertexArray(mVertexAttributeBufferID);
-    }
-
-    void VertexAttributeBuffer::Unbind() const
-    {
-        glBindVertexArray(0);
-    }
-
-    void VertexAttributeBuffer::Init()
-    {
-        glGenVertexArrays(1, &mVertexAttributeBufferID);
-        glBindVertexArray(mVertexAttributeBufferID);
-
         // position attribute
         glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)(offsetof(Vertex, mPosition)));
         glEnableVertexAttribArray(0);
@@ -73,26 +41,17 @@ namespace MinecraftGL
         glBindVertexArray(0);
     }
 
-    IndexBuffer::IndexBuffer(const void* pData, const unsigned int pSize)
+    void Buffer::BindVao()
     {
-        mData = pData;
-        mSize = pSize;
-        glGenBuffers(1, &mId);
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mId);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, mSize, mData, GL_STATIC_DRAW);
+        if (mVao == GL_FALSE)
+        {
+            glGenVertexArrays(1, &(GLuint)mVao);
+        }
+        glBindVertexArray(mVao);
     }
 
-    IndexBuffer::~IndexBuffer()
+    void Buffer::UnbindVao()
     {
-        glDeleteBuffers(1, &mId);
-    }
-
-    void IndexBuffer::SetData(const void* pData, const unsigned int pSize)
-    {
-        mData = pData;
-        mSize = pSize;
-        glGenBuffers(1, &mId);
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mId);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, mSize, mData, GL_STATIC_DRAW);
+        glBindVertexArray(0);
     }
 }

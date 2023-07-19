@@ -3,59 +3,23 @@
 
 namespace MinecraftGL
 {
-    class IBuffer
+    class Buffer
     {
     public:
 
-        IBuffer() = default;
+        Buffer() = default;
+        void GenerateBuffer();
+        void BindBuffer(std::vector<struct Vertex> pVertex, std::vector<uint32_t> pIndices);
 
-        IBuffer(unsigned int& pID, const void* pData, const unsigned int pSize)
-            : mId(pID), mData(pData), mSize(pSize)
-        {
-        }
+        void SetAttribute();
 
-        virtual void SetData(const void* pData, const unsigned int pSize) = 0;
+        void BindVao();
+        void UnbindVao();
 
     public:
 
-        unsigned int mId;
+        unsigned int mVbo, mEbo, mVao;
         const void* mData = nullptr;
         unsigned int mSize = 0;
-    };
-
-    class VertexBuffer : public IBuffer
-    {
-    public:
-        VertexBuffer(const void* pData, const unsigned int pSize);
-        VertexBuffer() = default;
-        ~VertexBuffer();
-
-        void SetData(const void* pData, const unsigned int pSize) override;
-    };
-
-    class IndexBuffer : public IBuffer
-    {
-    public:
-        IndexBuffer(const void* pData, const unsigned int pSize);
-        IndexBuffer() = default;
-        ~IndexBuffer();
-
-        void SetData(const void* pData, const unsigned int pSize) override;
-    };
-
-    class VertexAttributeBuffer
-    {
-    public:
-
-        VertexAttributeBuffer();
-
-        ~VertexAttributeBuffer();
-
-        void Bind() const;
-        void Unbind() const;
-        void Init();
-
-    public:
-        unsigned int mVertexAttributeBufferID;
     };
 };

@@ -36,8 +36,6 @@ namespace MinecraftGL
 		MGLMaths::Vec3f mPosition, mRotation, mScale;
 
     private:
-        VertexBuffer mVbo;
-        IndexBuffer mEbo;
-        VertexAttributeBuffer mVao;
+		Buffer mBuffer;
     };
 }
