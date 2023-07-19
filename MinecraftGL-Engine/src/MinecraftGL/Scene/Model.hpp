@@ -12,31 +12,31 @@
 
 namespace MinecraftGL
 {
-    struct Vertex
-    {
-        MGLMaths::Vec3f mPosition;
-        MGLMaths::Vec2f mTexCoords;
-        MGLMaths::Vec3f mNormal;
-    };
+	struct Vertex
+	{
+		MGLMaths::Vec3f mPosition;
+		MGLMaths::Vec2f mTexCoords;
+		MGLMaths::Vec3f mNormal;
+	};
 
-    class Model
-    {
-    public:
-        Model(const std::string& pPath, MGLMaths::Vec3f& mPosition, MGLMaths::Vec3f& mRotation, MGLMaths::Vec3f& mScale);
-        ~Model() = default;
-        void Draw();
+	class Model
+	{
+	public:
+		Model(const std::string& pPath, const MGLMaths::Vec3f& mPosition, const MGLMaths::Vec3f& mRotation, const MGLMaths::Vec3f& mScale);
+		~Model() = default;
+		void Draw();
 
-        void loadModel(const std::string& pPath);
+		void loadModel(const std::string& pPath);
 
-        MGLMaths::Mat4f getModelMatrix();
-    public:
-        std::vector<Vertex> mVertexBuffer;
-        std::vector<uint32_t> mIndexBuffer;
+		MGLMaths::Mat4f getModelMatrix();
+	public:
+		std::vector<Vertex> mVertexBuffer;
+		std::vector<uint32_t> mIndexBuffer;
 
-        MGLMaths::Vec3f mPosition, mRotation, mScale;
+		MGLMaths::Vec3f mPosition, mRotation, mScale;
 
-    private:
-        VertexBuffer mVbo;
-        VertexAttributeBuffer mVao;
-    };
+	private:
+		VertexBuffer mVbo;
+		VertexAttributeBuffer mVao;
+	};
 }
