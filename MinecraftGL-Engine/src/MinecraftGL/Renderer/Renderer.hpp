@@ -5,25 +5,27 @@
 
 namespace MinecraftGL
 {
-	enum class ShaderType
-	{
-		VertexShader = GL_VERTEX_SHADER,
-		FragmentShader = GL_FRAGMENT_SHADER
-	};
+    enum class ShaderType
+    {
+        VertexShader = GL_VERTEX_SHADER,
+        FragmentShader = GL_FRAGMENT_SHADER
+    };
 
-	class RendererOpenGL
-	{
-	public:
-		RendererOpenGL() = default;
-		~RendererOpenGL() = default;
+    class RendererOpenGL
+    {
+    public:
+        RendererOpenGL() = default;
+        ~RendererOpenGL() = default;
 
-		void Clear();
-		void SetClearColor(const MGLMaths::Vec4f& pColor);
+        static void Init();
 
-		static unsigned int LoadShader(const ShaderType pType, const std::string& pFilename);
-		static unsigned int LinkShader(const unsigned int& pVertex, const unsigned int& pFragment);
+        void Clear();
+        void SetClearColor(const MGLMaths::Vec4f& pColor);
 
-	private:
-		static std::string ReadShader(const std::string& pFilename);
-	};
+        static unsigned int LoadShader(const ShaderType pType, const std::string& pFilename);
+        static unsigned int LinkShader(const unsigned int& pVertex, const unsigned int& pFragment);
+
+    private:
+        static std::string ReadShader(const std::string& pFilename);
+    };
 };

@@ -1,6 +1,7 @@
 #include "mglpch.hpp"
 #include "Shader.hpp"
 #include "Renderer.hpp"
+#include "MinecraftGL/Core/Log.hpp"
 
 namespace MinecraftGL
 {
@@ -32,17 +33,30 @@ namespace MinecraftGL
 
     void Shader::SetFloat3(const std::string& pName, const MGLMaths::Vec3f& pValue)
     {
-        glUniform3fv(glGetUniformLocation(mShaderProgramID, pName.c_str()), 1, pValue.GetPointer());
+        GLuint success = glGetUniformLocation(mShaderProgramID, pName.c_str());
+
+        glUniform3fv(success, 1, pValue.GetPointer());
     }
 
     void Shader::SetFloat4(const std::string& pName, const MGLMaths::Vec4f& pValue)
     {
-        glUniform4fv(glGetUniformLocation(mShaderProgramID, pName.c_str()), 1, pValue.GetPointer());
+        GLint success = glGetUniformLocation(mShaderProgramID, pName.c_str());
+
+        glUniform4fv(success, 1, pValue.GetPointer());
     }
 
     void Shader::SetMat4(const std::string& pName, const MGLMaths::Mat4f& pValue)
     {
-        glUniformMatrix4fv(glGetUniformLocation(mShaderProgramID, pName.c_str()), 1, GL_FALSE, pValue.GetPointer());
+        GLint success = glGetUniformLocation(mShaderProgramID, pName.c_str());
+
+        glUniformMatrix4fv(success, 1, GL_FALSE, pValue.GetPointer());
+    }
+
+    void Shader::SetMat3(const std::string& pName, const MGLMaths::Mat3f& pValue)
+    {
+        GLint success = glGetUniformLocation(mShaderProgramID, pName.c_str());
+
+        glUniformMatrix3fv(success, 1, GL_FALSE, pValue.GetPointer());
     }
 
     unsigned int Shader::CreateShader(const std::string& pVertexShader, const std::string& pFragmentShader)

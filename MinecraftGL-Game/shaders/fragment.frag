@@ -6,9 +6,9 @@ in VS_OUT {
     vec2 TexCoords;
 } fs_in;
 
-out vec4 Frament_color
+out vec4 Frament_color;
 
-int main()
+void main()
 {
-	fragment_color = vec4(fs_in.FragPos, 1.0);
+	Frament_color = vec4(fs_in.FragPos, 1.0);
 }

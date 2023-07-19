@@ -82,8 +82,8 @@ namespace MinecraftGL
     {
         mVao.Bind();
 
-        glBindBuffer(GL_ARRAY_BUFFER, mVbo.mId);
+        glDrawArrays(GL_TRIANGLES, 0, mVertexBuffer.size());
 
-        glDrawArrays(GL_TRIANGLES, 0, static_cast<GLsizei>(mVertexBuffer.size()));
+        mVao.Unbind();
     }
 }

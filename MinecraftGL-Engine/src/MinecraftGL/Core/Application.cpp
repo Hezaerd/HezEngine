@@ -6,6 +6,7 @@
 #include "MinecraftGL/Renderer/Shader.hpp"
 #include "MinecraftGL/Scene/Model.hpp"
 #include "MinecraftGL/Scene/Camera.hpp"
+#include "MinecraftGL/Renderer/Renderer.hpp"
 
 namespace MinecraftGL
 {
@@ -17,6 +18,7 @@ namespace MinecraftGL
         s_Instance = this;
 
         m_Window = Window::Create();
+        RendererOpenGL::Init();
         m_Window->SetEventCallback(MGL_BIND_EVENT_FN(Application::OnEvent));
     }
 
@@ -53,7 +55,7 @@ namespace MinecraftGL
     {
         //current dir = MinecraftGL-Game
         Shader shader("basicShader", "shaders/vertex.vert", "shaders/fragment.frag");
-        Model model("assets/models/Cube.obj", MGLMaths::Vec3f(0), MGLMaths::Vec3f(0), MGLMaths::Vec3f(1));
+        Model model("assets/models/Cube.obj", MGLMaths::Vec3f(0,0,-3), MGLMaths::Vec3f(0), MGLMaths::Vec3f(1));
         Camera cam(MGLMaths::Vec3f(0.0f, 0.0f, 3.0f), MGLMaths::Vec3f::Up);
         while (m_Running)
         {
@@ -75,7 +77,14 @@ namespace MinecraftGL
                     //send model
                     shader.SetMat4("model", model.getModelMatrix());
                     //send normal matrix
-                    shader.SetMat4("normalMatrix", model.getModelMatrix().Inverse().Transpose());
+              /*      MGLMaths::Mat4f normalMatrix = model.getModelMatrix();
+
+                    MGLMaths::Mat3f temp;
+
+                    normalMatrix.Inverse();
+                    normalMatrix.Transpose();
+                    temp = normalMatrix;
+                    shader.SetMat3("normalMatrix", temp);*/
 
                     model.Draw();
                     shader.Unbind();

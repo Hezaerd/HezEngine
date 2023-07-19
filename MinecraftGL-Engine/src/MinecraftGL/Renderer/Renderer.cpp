@@ -4,6 +4,15 @@
 
 namespace MinecraftGL
 {
+    void RendererOpenGL::Init()
+    {
+        glEnable(GL_DEPTH_TEST);
+        glEnable(GL_CULL_FACE);
+        glCullFace(GL_BACK);
+
+        glEnable(GL_BLEND);
+    }
+
     unsigned int RendererOpenGL::LoadShader(const ShaderType pType, const std::string& pFilename)
     {
         int type = 0;

@@ -18,6 +18,7 @@ namespace MinecraftGL
         void SetFloat3(const std::string& pName, const MGLMaths::Vec3f& pValue);
         void SetFloat4(const std::string& pName, const MGLMaths::Vec4f& pValue);
         void SetMat4(const std::string& pName, const MGLMaths::Mat4f& pValue);
+        void SetMat3(const std::string& pName, const MGLMaths::Mat3f& pValue);
 
         unsigned int CreateShader(const std::string& pVertexShader, const std::string& pFragmentShader);
 
