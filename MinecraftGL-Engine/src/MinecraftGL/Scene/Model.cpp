@@ -16,6 +16,7 @@ namespace MinecraftGL
         MGL_CORE_INFO("Model loaded");
 
         mVbo.SetData(mVertexBuffer.data(), mVertexBuffer.size());
+        mEbo.SetData(mIndexBuffer.data(), mIndexBuffer.size());
         mVao.Init();
     }
 
@@ -82,7 +83,7 @@ namespace MinecraftGL
     {
         mVao.Bind();
 
-        glDrawArrays(GL_TRIANGLES, 0, mVertexBuffer.size());
+        glDrawElements(GL_TRIANGLES, mIndexBuffer.size(), GL_UNSIGNED_INT, 0);
 
         mVao.Unbind();
     }

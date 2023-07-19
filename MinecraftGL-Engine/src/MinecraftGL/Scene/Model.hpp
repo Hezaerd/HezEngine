@@ -37,6 +37,7 @@ namespace MinecraftGL
 
     private:
         VertexBuffer mVbo;
+        IndexBuffer mEbo;
         VertexAttributeBuffer mVao;
     };
 }
