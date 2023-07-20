@@ -15,7 +15,8 @@ project "MinecraftGL-Engine"
         "src/**.hpp",
         "src/**.cpp",
         "vendor/stb_image/**.h",
-        "vendor/stb_image/**.cpp"
+        "vendor/stb_image/**.cpp",
+        "vendor/tinyobjloader/**.h",
     }
 
     includedirs
@@ -25,6 +26,7 @@ project "MinecraftGL-Engine"
         "%{IncludeDir.Glad}",
         "%{IncludeDir.GLFW}",
         "%{IncludeDir.stb_image}",
+        "%{IncludeDir.tinyobjloader}",
         "%{IncludeDir.ImGui}",
         "%{IncludeDir.MGLMaths}"
     }

@@ -31,7 +31,8 @@ namespace MinecraftGL
 			type = GL_FRAGMENT_SHADER;
 			break;
 		default:
-			throw std::logic_error("Not a supported type");
+			MGL_CORE_ERROR("Shader type not supported");
+			break;
 		}
 		char log[512];
 		int succes;
@@ -96,7 +97,7 @@ namespace MinecraftGL
 		}
 		else
 		{
-			MGL_CORE_ERROR("Not a good file my comrade");
+			MGL_CORE_ERROR("Could not open shader file: {0}", pFilename);
 		}
 
 		in_file.close();
@@ -109,41 +110,41 @@ namespace MinecraftGL
 		// ignore non-significant error/warning codes
 		if (pId == 131169 || pId == 131185 || pId == 131218 || pId == 131204) return;
 
-		MGL_CORE_CRITICAL("---------------");
-		MGL_CORE_CRITICAL("Debug message ({0}): {1}", pId, pMessage);
+		MGL_CORE_ERROR("---------------");
+		MGL_CORE_ERROR("Debug message ({0}): {1}", pId, pMessage);
 
 		switch (pSource)
 		{
-		case GL_DEBUG_SOURCE_API:             MGL_CORE_CRITICAL("Source: API"); break;
-		case GL_DEBUG_SOURCE_WINDOW_SYSTEM:   MGL_CORE_CRITICAL("Source: Window System"); break;
-		case GL_DEBUG_SOURCE_SHADER_COMPILER: MGL_CORE_CRITICAL("Source: Shader Compiler"); break;
-		case GL_DEBUG_SOURCE_THIRD_PARTY:     MGL_CORE_CRITICAL("Source: Third Party"); break;
-		case GL_DEBUG_SOURCE_APPLICATION:     MGL_CORE_CRITICAL("Source: Application"); break;
-		case GL_DEBUG_SOURCE_OTHER:           MGL_CORE_CRITICAL("Source: Other"); break;
+		case GL_DEBUG_SOURCE_API:             MGL_CORE_ERROR("Source: API"); break;
+		case GL_DEBUG_SOURCE_WINDOW_SYSTEM:   MGL_CORE_ERROR("Source: Window System"); break;
+		case GL_DEBUG_SOURCE_SHADER_COMPILER: MGL_CORE_ERROR("Source: Shader Compiler"); break;
+		case GL_DEBUG_SOURCE_THIRD_PARTY:     MGL_CORE_ERROR("Source: Third Party"); break;
+		case GL_DEBUG_SOURCE_APPLICATION:     MGL_CORE_ERROR("Source: Application"); break;
+		case GL_DEBUG_SOURCE_OTHER:           MGL_CORE_ERROR("Source: Other"); break;
 		}
 
 		switch (pType)
 		{
-		case GL_DEBUG_TYPE_ERROR:               MGL_CORE_CRITICAL("Type: Error"); break;
-		case GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR: MGL_CORE_CRITICAL("Type: Deprecated Behaviour"); break;
-		case GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR:  MGL_CORE_CRITICAL("Type: Undefined Behaviour"); break;
-		case GL_DEBUG_TYPE_PORTABILITY:         MGL_CORE_CRITICAL("Type: Portability"); break;
-		case GL_DEBUG_TYPE_PERFORMANCE:         MGL_CORE_CRITICAL("Type: Performance"); break;
-		case GL_DEBUG_TYPE_MARKER:              MGL_CORE_CRITICAL("Type: Marker"); break;
-		case GL_DEBUG_TYPE_PUSH_GROUP:          MGL_CORE_CRITICAL("Type: Push Group"); break;
-		case GL_DEBUG_TYPE_POP_GROUP:           MGL_CORE_CRITICAL("Type: Pop Group"); break;
-		case GL_DEBUG_TYPE_OTHER:               MGL_CORE_CRITICAL("Type: Other"); break;
+		case GL_DEBUG_TYPE_ERROR:               MGL_CORE_ERROR("Type: Error"); break;
+		case GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR: MGL_CORE_ERROR("Type: Deprecated Behaviour"); break;
+		case GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR:  MGL_CORE_ERROR("Type: Undefined Behaviour"); break;
+		case GL_DEBUG_TYPE_PORTABILITY:         MGL_CORE_ERROR("Type: Portability"); break;
+		case GL_DEBUG_TYPE_PERFORMANCE:         MGL_CORE_ERROR("Type: Performance"); break;
+		case GL_DEBUG_TYPE_MARKER:              MGL_CORE_ERROR("Type: Marker"); break;
+		case GL_DEBUG_TYPE_PUSH_GROUP:          MGL_CORE_ERROR("Type: Push Group"); break;
+		case GL_DEBUG_TYPE_POP_GROUP:           MGL_CORE_ERROR("Type: Pop Group"); break;
+		case GL_DEBUG_TYPE_OTHER:               MGL_CORE_ERROR("Type: Other"); break;
 		}
 
 		switch (pSeverity)
 		{
-		case GL_DEBUG_SEVERITY_HIGH:         MGL_CORE_CRITICAL("Severity: high"); break;
-		case GL_DEBUG_SEVERITY_MEDIUM:       MGL_CORE_CRITICAL("Severity: medium"); break;
-		case GL_DEBUG_SEVERITY_LOW:          MGL_CORE_CRITICAL("Severity: low"); break;
-		case GL_DEBUG_SEVERITY_NOTIFICATION: MGL_CORE_CRITICAL("Severity: notification"); break;
+		case GL_DEBUG_SEVERITY_HIGH:         MGL_CORE_ERROR("Severity: high"); break;
+		case GL_DEBUG_SEVERITY_MEDIUM:       MGL_CORE_ERROR("Severity: medium"); break;
+		case GL_DEBUG_SEVERITY_LOW:          MGL_CORE_ERROR("Severity: low"); break;
+		case GL_DEBUG_SEVERITY_NOTIFICATION: MGL_CORE_ERROR("Severity: notification"); break;
 		}
 
-		MGL_CORE_CRITICAL("---------------");
+		MGL_CORE_ERROR("---------------");
 
 		if (pSeverity == GL_DEBUG_SEVERITY_HIGH)
 			MGL_CORE_ASSERT(false, "GL_DEBUG_SEVERITY_HIGH");

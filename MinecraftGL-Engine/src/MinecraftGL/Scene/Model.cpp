@@ -5,86 +5,72 @@
 #include "MinecraftGL/Core/Log.hpp"
 #include "MinecraftGL/Renderer/Renderer.hpp"
 
-#define _CRT_SECURE_NO_WARNINGS
+#define TINYOBJLOADER_IMPLEMENTATION
+#include <tiny_obj_loader.h>
 
 namespace MinecraftGL
 {
-    Model::Model(const std::string& pPath, const MGLMaths::Vec3f& pPosition, const MGLMaths::Vec3f& pRotation, const MGLMaths::Vec3f& pScale)
-        : mPosition(pPosition), mRotation(pRotation), mScale(pScale)
-    {
-        loadModel(pPath);
-        MGL_CORE_INFO("Model loaded");
+	Model::Model(const std::string& pPath, const MGLMaths::Vec3f& pPosition, const MGLMaths::Vec3f& pRotation, const MGLMaths::Vec3f& pScale)
+		: mPosition(pPosition), mRotation(pRotation), mScale(pScale)
+	{
+		loadModel(pPath);
 
-        mBuffer.GenerateBuffer();
-        mBuffer.BindBuffer(mVertexBuffer, mIndexBuffer);
-        mBuffer.SetAttribute();
-    }
+		mBuffer.GenerateBuffer();
+		mBuffer.BindBuffer(mVertexBuffer, mIndexBuffer);
+		mBuffer.SetAttribute();
+	}
 
-    void Model::loadModel(const std::string& pPath)
-    {
-        FILE* file = fopen(pPath.c_str(), "r");
-        MGL_CORE_ASSERT(file, "Failed to open file");
+	void Model::loadModel(const std::string& pPath)
+	{
+		MGL_CORE_TRACE("Loading model: {0}", pPath);
 
-        while (true)
-        {
-            char lineHeader[128];
+		bool modelLoaded = false;
 
-            int res = fscanf(file, "%s", lineHeader);
-            if (res == END_OF_FILE)
-                break;
+		tinyobj::attrib_t attrib;
+		std::vector<tinyobj::shape_t> shapes;
+		std::vector<tinyobj::material_t> materials;
 
-            Vertex vertex;
+		std::string warn, err;
 
-            if (strcmp(lineHeader, PARSING_VERTEX) == 0)
-            {
-                fscanf(file, "%f %f %f\n", &vertex.mPosition.x, &vertex.mPosition.y, &vertex.mPosition.z);
-                mVertexBuffer.emplace_back(vertex);
-            }
-            if (strcmp(lineHeader, PARSING_TEXTURE_COORDS) == 0)
-            {
-                fscanf(file, "%f %f\n", &vertex.mTexCoords.x, &vertex.mTexCoords.y);
-                mVertexBuffer.emplace_back(vertex);
-            }
-            if (strcmp(lineHeader, PARSING_NORMAL) == 0)
-            {
-                fscanf(file, "%f %f %f\n", &vertex.mNormal.x, &vertex.mNormal.y, &vertex.mNormal.z);
-                mVertexBuffer.emplace_back(vertex);
-            }
-            if (strcmp(lineHeader, PARSING_FACE) == 0)
-            {
-                uint32_t vertexIndex[3], textureIndex[3], normalIndex[3];
-                int matches = fscanf(file, "%d/%d/%d %d/%d/%d %d/%d/%d\n",
-                    &vertexIndex[0], &textureIndex[0], &normalIndex[0],
-                    &vertexIndex[1], &textureIndex[1], &normalIndex[1],
-                    &vertexIndex[2], &textureIndex[2], &normalIndex[2]);
-                if (matches != 9)
-                {
-                    MGL_CORE_ERROR("File can't be read by our simple parser : ( Try exporting with other options\n");
-                    return;
-                }
-                mIndexBuffer.emplace_back(vertexIndex[0]);
-                mIndexBuffer.emplace_back(vertexIndex[1]);
-                mIndexBuffer.emplace_back(vertexIndex[2]);
-            }
-            else
-            {
-                char stupidBuffer[1000];
-                fgets(stupidBuffer, 1000, file);
-            }
-        }
-    }
+		modelLoaded = tinyobj::LoadObj(&attrib, &shapes, &materials, &warn, &err, pPath.c_str());
+		if (!modelLoaded)
+		{
+			MGL_CORE_ERROR("---------------");
+			MGL_CORE_ERROR("Failed to load model: {0}", pPath);
+			MGL_CORE_ERROR("Warning: {0}", warn);
+			MGL_CORE_ERROR("Error: {0}", err);
+			MGL_CORE_ERROR("---------------");
+			return;
+		}
+		MGL_CORE_TRACE("Successfully loaded model: {0}", pPath);
 
-    MGLMaths::Mat4f Model::getModelMatrix()
-    {
-        return MGLMaths::Mat4f::Transform(mPosition, mRotation, mScale);
-    }
+		for (const auto& shape : shapes)
+		{
+			for (const auto& index : shape.mesh.indices)
+			{
+				Vertex vertex;
 
-    void Model::Draw()
-    {
-        mBuffer.BindVao();
+				vertex.mPosition = { attrib.vertices[3 * index.vertex_index + 0], attrib.vertices[3 * index.vertex_index + 1], attrib.vertices[3 * index.vertex_index + 2] };
+				vertex.mTexCoords = { attrib.texcoords[2 * index.texcoord_index + 0], attrib.texcoords[2 * index.texcoord_index + 1] };
+				vertex.mNormal = { attrib.normals[3 * index.normal_index + 0], attrib.normals[3 * index.normal_index + 1], attrib.normals[3 * index.normal_index + 2] };
 
-        glDrawElements(GL_TRIANGLES, mIndexBuffer.size(), GL_UNSIGNED_INT, nullptr);
+				mVertexBuffer.push_back(vertex);
+				mIndexBuffer.push_back(mIndexBuffer.size());
+			}
+		}
+	}
 
-        mBuffer.UnbindVao();
-    }
+	MGLMaths::Mat4f Model::getModelMatrix()
+	{
+		return MGLMaths::Mat4f::Transform(mPosition, mRotation, mScale);
+	}
+
+	void Model::Draw()
+	{
+		mBuffer.BindVao();
+
+		glDrawElements(GL_TRIANGLES, mIndexBuffer.size(), GL_UNSIGNED_INT, nullptr);
+
+		mBuffer.UnbindVao();
+	}
 }
