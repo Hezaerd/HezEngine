@@ -69,7 +69,9 @@ namespace MinecraftGL
 	{
 		mBuffer.BindVao();
 
-		glDrawElements(GL_TRIANGLES, mIndexBuffer.size(), GL_UNSIGNED_INT, nullptr);
+		glDrawArrays(GL_TRIANGLES, 0, mVertexBuffer.size());
+
+		//glDrawElements(GL_TRIANGLES, mIndexBuffer.size(), GL_UNSIGNED_INT, nullptr);
 
 		mBuffer.UnbindVao();
 	}

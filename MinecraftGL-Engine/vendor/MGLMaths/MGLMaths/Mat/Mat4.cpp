@@ -32,7 +32,6 @@ namespace MGLMaths
     Mat4f::Mat4f(const Mat4f& pOther)
     {
         memcpy(data, pOther.data, 4 * sizeof(Vec4f));
-
     }
 
     Mat4f Mat4f::operator=(const Mat4f& pOther)
@@ -92,15 +91,14 @@ namespace MGLMaths
         Mat4f result;
         for (uint8_t i = 0; i < 4; i++)
         {
-            Vec4f vec4;
             for (uint8_t j = 0; j < 4; j++)
             {
-                vec4[j] = data[0][j] * pOther.data[i].x
-                    + data[0][j] * pOther.data[i].y
-                    + data[0][j] * pOther.data[i].z
-                    + data[0][j] * pOther.data[i].w;
+                result.data[i][j] =
+                    data[i][0] * pOther.data[0][j]
+                    + data[i][1] * pOther.data[1][j]
+                    + data[i][2] * pOther.data[2][j]
+                    + data[i][3] * pOther.data[3][j];
             }
-            result.data[i] = vec4;
         }
         return result;
     }
@@ -150,12 +148,12 @@ namespace MGLMaths
             Vec4f vec4;
             for (uint8_t j = 0; j < 4; j++)
             {
-                vec4[j] = data[0][j] * pOther.data[i].x
-                    + data[0][j] * pOther.data[i].y
-                    + data[0][j] * pOther.data[i].z
-                    + data[0][j] * pOther.data[i].w;
+                data[i][j] =
+                    data[i][0] * pOther.data[0][j]
+                    + data[i][1] * pOther.data[1][j]
+                    + data[i][2] * pOther.data[2][j]
+                    + data[i][3] * pOther.data[3][j];
             }
-            data[i] = vec4;
         }
         return *this;
     }

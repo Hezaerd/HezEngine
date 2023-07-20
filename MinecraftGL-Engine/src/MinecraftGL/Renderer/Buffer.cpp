@@ -12,15 +12,12 @@ namespace MinecraftGL
         glGenBuffers(1, &mEbo);
     }
 
-    void Buffer::BindBuffer(std::vector<Vertex> pVertex, std::vector<uint32_t> pIndices)
+    void Buffer::BindBuffer(std::vector<Vertex> pVertex, std::vector<uint32_t> /*pIndices*/)
     {
         glBindVertexArray(mVao);
 
         glBindBuffer(GL_ARRAY_BUFFER, mVbo);
-        glBufferData(GL_ARRAY_BUFFER, pVertex.size(), pVertex.data(), GL_STATIC_DRAW);
-
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mEbo);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, pIndices.size(), pIndices.data(), GL_STATIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, pVertex.size() * sizeof(Vertex), pVertex.data(), GL_STATIC_DRAW);
     }
 
     void Buffer::SetAttribute()

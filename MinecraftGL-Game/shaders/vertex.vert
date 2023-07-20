@@ -14,10 +14,10 @@ out VS_OUT {
 
 void main()
 {
-	gl_Position = MVP * vec4(aPos.x, aPos.y, aPos.z, 1.0);
+	gl_Position =  MVP * vec4(aPos.x, aPos.y, aPos.z, 1.0);
 
 	vs_out.Normal = /*normalMatrix **/ vertex_normal;
 	vs_out.TexCoords = uv;
-	vs_out.FragPos = vec3(model * vec4(aPos, 1.0));
+	vs_out.FragPos = vec3(vec4(aPos.x, aPos.y, aPos.z, 1.0) * model);
 
 }
