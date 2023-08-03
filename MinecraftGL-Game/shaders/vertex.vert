@@ -5,7 +5,7 @@ layout (location = 2) in vec3 vertex_normal;
 
 uniform mat4 MVP;
 uniform mat4 model;
-//uniform mat3 normalMatrix;
+// uniform mat3 normalMatrix;
 out VS_OUT {
 	vec3 FragPos;
 	vec3 Normal;

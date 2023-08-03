@@ -10,131 +10,106 @@
 
 namespace MinecraftGL
 {
-    Application* Application::s_Instance = nullptr;
+	Application* Application::s_Instance = nullptr;
 
-    Application::Application()
-    {
-        MGL_CORE_ASSERT(!s_Instance, "Application already exists!");
-        s_Instance = this;
+	Application::Application()
+	{
+		MGL_CORE_ASSERT(!s_Instance, "Application already exists!");
+		s_Instance = this;
 
-        m_Window = Window::Create();
-        RendererOpenGL::Init();
-        m_Window->SetEventCallback(MGL_BIND_EVENT_FN(Application::OnEvent));
-    }
+		m_Window = Window::Create();
+		RendererOpenGL::Init();
+		m_Window->SetEventCallback(MGL_BIND_EVENT_FN(Application::OnEvent));
+	}
 
-    Application::~Application()
-    {
-        MGL_CORE_INFO("Application destroyed.");
-    }
+	Application::~Application()
+	{
+		MGL_CORE_INFO("Application destroyed.");
+	}
 
-    void Application::OnEvent(Event& pEvent)
-    {
-        EventDispatcher eventHandler(pEvent);
-        eventHandler.Dispatch<WindowCloseEvent>(MGL_BIND_EVENT_FN(Application::OnWindowClose));
-        eventHandler.Dispatch<WindowResizeEvent>(MGL_BIND_EVENT_FN(Application::OnWindowResize));
+	void Application::OnEvent(Event& pEvent)
+	{
+		EventDispatcher eventHandler(pEvent);
+		eventHandler.Dispatch<WindowCloseEvent>(MGL_BIND_EVENT_FN(Application::OnWindowClose));
+		eventHandler.Dispatch<WindowResizeEvent>(MGL_BIND_EVENT_FN(Application::OnWindowResize));
+	}
 
-        for (auto it = m_LayerStack.end(); it != m_LayerStack.begin();)
-        {
-            (*--it)->OnEvent(pEvent);
-            if (pEvent.Handled)
-                break;
-        }
-    }
+	void Application::Run()
+	{
+		//current dir = MinecraftGL-Game
+		Shader shader("basicShader", "shaders/vertex.vert", "shaders/fragment.frag");
+		Model model("assets/models/Cube.obj", MGLMaths::Vec3f(0, 0, -3), MGLMaths::Vec3f(0), MGLMaths::Vec3f(1));
+		Camera cam(MGLMaths::Vec3f(0.0f, 0.0f, 3.0f), MGLMaths::Vec3f::Up);
 
-    void Application::PushLayer(Layer* pLayer)
-    {
-        m_LayerStack.PushLayer(pLayer);
-    }
+		while (m_Running)
+		{
+			CalculateDeltaTime();
+			CalculateMouseOffset();
 
-    void Application::PushOverlay(Layer* pLayer)
-    {
-        m_LayerStack.PushOverlay(pLayer);
-    }
+			glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+			glClear(GL_COLOR_BUFFER_BIT);
+			glClear(GL_DEPTH_BUFFER_BIT);
 
-    void Application::Run()
-    {
-        //current dir = MinecraftGL-Game
-        Shader shader("basicShader", "shaders/vertex.vert", "shaders/fragment.frag");
-        Model model("assets/models/Cube.obj", MGLMaths::Vec3f(0, 0, -3), MGLMaths::Vec3f(0), MGLMaths::Vec3f(1));
-        Camera cam(MGLMaths::Vec3f(0.0f, 0.0f, 6.0f), MGLMaths::Vec3f::Up);
-        while (m_Running)
-        {
-            CalculateDeltaTime();
-            CalculateMouseOffset();
-            if (!m_Minimized)
-            {
-                for (Layer* layer : m_LayerStack)
-                    layer->OnUpdate();
+			if (!m_Minimized)
+			{
+				//TODO: Change to Draw Func and pass it the object to draw ??? (maybe)
+				//TODO: Check using renderdoc if the model is drawn correctly
+				cam.ProcessMouseInput(mDeltaTime, mOffsetX, mOffsetY);
+				{
+					shader.Bind();
+					//send MVP
+					MGLMaths::Mat4f MVP = model.getModelMatrix() * cam.GetViewMatrix() * cam.GetProjectionMatrix();
 
-                //TODO: Change to Draw Func and pass it the object to draw ??? (maybe)
-                //TODO: Check using renderdoc if the model is drawn correctly
-                cam.ProcessMouseInput(mDeltaTime, mOffsetX, mOffsetY);
+					shader.SetMat4("MVP", MVP);
+					//send model
+					shader.SetMat4("model", model.getModelMatrix());
+					//send normal matrix
+					MGLMaths::Mat4f normalMatrix = model.getModelMatrix();
 
-                shader.Bind();
-                //send MVP
-                MGLMaths::Mat4f MVP = cam.GetProjectionMatrix();
-                MVP = MVP * cam.GetViewMatrix();
-                MVP = MVP * model.getModelMatrix();
+					model.Draw();
+					shader.Unbind();
+				}
 
-                shader.SetMat4("MVP", MVP);
-                //send model
-                shader.SetMat4("model", model.getModelMatrix());
-                //send normal matrix
-          /*      MGLMaths::Mat4f normalMatrix = model.getModelMatrix();
+				m_Window->OnUpdate();
+			}
+		}
+	}
 
-                MGLMaths::Mat3f temp;
+	bool Application::OnWindowClose(WindowCloseEvent& /*pEvent*/)
+	{
+		MGL_CORE_INFO("Window closed.");
 
-                normalMatrix.Inverse();
-                normalMatrix.Transpose();
-                temp = normalMatrix;
-                shader.SetMat3("normalMatrix", temp);*/
+		m_Running = false;
+		return true;
+	}
 
-                model.Draw();
-                shader.Unbind();
+	bool Application::OnWindowResize(WindowResizeEvent& /*pEvent*/)
+	{
+		return true;
+	}
 
-                glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
-                glClear(GL_COLOR_BUFFER_BIT);
-            }
+	void Application::CalculateDeltaTime()
+	{
+		mCurrentTime = std::chrono::steady_clock::now();
+		mDeltaTime = std::chrono::duration<float>(mCurrentTime - mLastTime).count();
+		mLastTime = mCurrentTime;
+	}
 
-            m_Window->OnUpdate();
-        }
-    }
+	void Application::CalculateMouseOffset()
+	{
+		m_Window->ProcessMousePos(mMouseX, mMouseY);
 
-    bool Application::OnWindowClose(WindowCloseEvent& /*pEvent*/)
-    {
-        MGL_CORE_INFO("Window closed.");
+		if (mFirstMouse)
+		{
+			mLastX = mMouseX;
+			mLastY = mMouseY;
+			mFirstMouse = false;
+		}
 
-        m_Running = false;
-        return true;
-    }
+		mOffsetX = mMouseX - mLastX;
+		mOffsetY = mLastY - mMouseY;
 
-    bool Application::OnWindowResize(WindowResizeEvent& /*pEvent*/)
-    {
-        return true;
-    }
-
-    void Application::CalculateDeltaTime()
-    {
-        mCurrentTime = std::chrono::steady_clock::now();
-        mDeltaTime = std::chrono::duration<float>(mCurrentTime - mLastTime).count();
-        mLastTime = mCurrentTime;
-    }
-
-    void Application::CalculateMouseOffset()
-    {
-        m_Window->ProcessMousePos(mMouseX, mMouseY);
-
-        if (mFirstMouse)
-        {
-            mLastX = mMouseX;
-            mLastY = mMouseY;
-            mFirstMouse = false;
-        }
-
-        mOffsetX = mMouseX - mLastX;
-        mOffsetY = mLastY - mMouseY;
-
-        mLastX = mMouseX;
-        mLastY = mMouseY;
-    }
+		mLastX = mMouseX;
+		mLastY = mMouseY;
+	}
 }

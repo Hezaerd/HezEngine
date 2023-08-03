@@ -3,7 +3,6 @@
 #include "MinecraftGL/Core/Base.hpp"
 
 #include "MinecraftGL/Core/Application.hpp"
-#include "MinecraftGL/Core/Layer.hpp"
 #include "MinecraftGL/Core/Log.hpp"
 #include "MinecraftGL/Core/Assert.hpp"
 
