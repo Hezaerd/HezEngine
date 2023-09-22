@@ -13,4 +13,5 @@ int main(int /*argc*/, char** /*argv*/)
 	auto app = MinecraftGL::CreateApplication();
 	app->Run();
 	delete app;
+	MGL_CORE_CRITICAL("Application destroyed.");
 }

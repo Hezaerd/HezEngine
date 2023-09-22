@@ -4,38 +4,32 @@
 #include "MinecraftGl/Renderer/Buffer.hpp"
 #include "MGLMaths/Matrices.hpp"
 
-#define END_OF_FILE (-1)
-#define PARSING_VERTEX ("v")
-#define PARSING_TEXTURE_COORDS ("vt")
-#define PARSING_NORMAL ("vn")
-#define PARSING_FACE ("f")
-
 namespace MinecraftGL
 {
-    struct Vertex
-    {
-        MGLMaths::Vec3f mPosition;
-        MGLMaths::Vec2f mTexCoords;
-        MGLMaths::Vec3f mNormal;
-    };
+	struct Vertex
+	{
+		MGLMaths::Vec3f mPosition;
+		MGLMaths::Vec2f mTexCoords;
+		MGLMaths::Vec3f mNormal;
+	};
 
-    class Model
-    {
-    public:
-        Model(const std::string& pPath, const MGLMaths::Vec3f& mPosition, const MGLMaths::Vec3f& mRotation, const MGLMaths::Vec3f& mScale);
-        ~Model() = default;
-        void Draw();
+	class Model
+	{
+	public:
+		Model(const std::string& pPath, const MGLMaths::Vec3f& mPosition = MGLMaths::Vec3f::Zero, const MGLMaths::Vec3f& mRotation = MGLMaths::Vec3f::Zero, const MGLMaths::Vec3f& mScale = { 1.0f,1.0f,1.0f });
+		~Model() = default;
+		void Draw();
 
-        void loadModel(const std::string& pPath);
+		void LoadModel(const std::string& pPath);
 
-        MGLMaths::Mat4f getModelMatrix();
-    public:
-        std::vector<Vertex> mVertexBuffer;
-        std::vector<uint32_t> mIndexBuffer;
+		MGLMaths::Mat4f GetModelMatrix();
+	public:
+		std::vector<Vertex> mVertexBuffer;
+		std::vector<uint32_t> mIndexBuffer;
 
-        MGLMaths::Vec3f mPosition, mRotation, mScale;
+		MGLMaths::Vec3f mPosition, mRotation, mScale;
 
-    private:
-        Buffer mBuffer;
-    };
+	private:
+		Buffer mBuffer;
+	};
 }

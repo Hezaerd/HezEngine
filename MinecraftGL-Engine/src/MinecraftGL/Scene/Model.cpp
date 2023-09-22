@@ -13,14 +13,14 @@ namespace MinecraftGL
 	Model::Model(const std::string& pPath, const MGLMaths::Vec3f& pPosition, const MGLMaths::Vec3f& pRotation, const MGLMaths::Vec3f& pScale)
 		: mPosition(pPosition), mRotation(pRotation), mScale(pScale)
 	{
-		loadModel(pPath);
+		LoadModel(pPath);
 
 		mBuffer.GenerateBuffer();
 		mBuffer.BindBuffer(mVertexBuffer, mIndexBuffer);
 		mBuffer.SetAttribute();
 	}
 
-	void Model::loadModel(const std::string& pPath)
+	void Model::LoadModel(const std::string& pPath)
 	{
 		MGL_CORE_TRACE("Loading model: {0}", pPath);
 
@@ -60,7 +60,7 @@ namespace MinecraftGL
 		}
 	}
 
-	MGLMaths::Mat4f Model::getModelMatrix()
+	MGLMaths::Mat4f Model::GetModelMatrix()
 	{
 		return MGLMaths::Mat4f::Transform(mPosition, mRotation, mScale);
 	}
@@ -70,7 +70,6 @@ namespace MinecraftGL
 		mBuffer.BindVao();
 
 		glDrawArrays(GL_TRIANGLES, 0, mVertexBuffer.size());
-
 		//glDrawElements(GL_TRIANGLES, mIndexBuffer.size(), GL_UNSIGNED_INT, nullptr);
 
 		mBuffer.UnbindVao();

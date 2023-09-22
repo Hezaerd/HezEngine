@@ -6,6 +6,11 @@
 
 namespace MinecraftGL
 {
+	float Time::GetTime()
+	{
+		return static_cast<float>(glfwGetTime());
+	}
+
 	static void GLFWErrorCallback(int pError, const char* pDescription)
 	{
 		MGL_CORE_ERROR("GLFW Error ({0}): {1}", pError, pDescription);

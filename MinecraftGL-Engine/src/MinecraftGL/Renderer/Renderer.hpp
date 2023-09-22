@@ -19,11 +19,12 @@ namespace MinecraftGL
 
 		static void Init();
 
-		void Clear();
-		void SetClearColor(const MGLMaths::Vec4f& pColor);
-
 		static unsigned int LoadShader(const ShaderType pType, const std::string& pFilename);
 		static unsigned int LinkShader(const unsigned int& pVertex, const unsigned int& pFragment);
+
+		static void SetViewport(uint32_t width, uint32_t height);
+		static void SetClearColor(const MGLMaths::Vec4f& pColor);
+		static void Clear();
 
 	private:
 		static std::string ReadShader(const std::string& pFilename);

@@ -7,7 +7,7 @@ namespace MinecraftGL
 	void RendererOpenGL::Init()
 	{
 		glEnable(GL_DEPTH_TEST);
-		//glEnable(GL_CULL_FACE);
+		glEnable(GL_CULL_FACE);
 
 		glEnable(GL_DEBUG_OUTPUT);
 		glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
@@ -76,6 +76,21 @@ namespace MinecraftGL
 		glDeleteShader(pFragment);
 
 		return ID;
+	}
+
+	void RendererOpenGL::SetViewport(uint32_t width, uint32_t height)
+	{
+		glViewport(0, 0, width, height);
+	}
+
+	void RendererOpenGL::SetClearColor(const MGLMaths::Vec4f& pColor)
+	{
+		glClearColor(pColor.x, pColor.y, pColor.z, pColor.w);
+	}
+
+	void RendererOpenGL::Clear()
+	{
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	}
 
 	std::string RendererOpenGL::ReadShader(const std::string& pFilename)

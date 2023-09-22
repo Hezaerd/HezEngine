@@ -41,10 +41,11 @@ namespace MinecraftGL
 
 		void SetEventCallback(const EventCallbackFn& pCallback) { m_Data.EventCallback = pCallback; }
 		void ProcessMousePos(float& pXpos, float& pYpos);
-		void ProcessKeyboardInput();
 
 		void SetVSync(bool pEnabled);
 		bool IsVSync() const;
+
+		void* GetNativeWindow() const { return m_Window; }
 
 		static Scope<Window> Create(const WindowData& pData = WindowData());
 
@@ -57,5 +58,11 @@ namespace MinecraftGL
 	public:
 		GLFWwindow* m_Window;
 		WindowData m_Data;
+	};
+
+	class Time
+	{
+	public:
+		static float GetTime();
 	};
 }

@@ -1,19 +1,22 @@
 #include <MinecraftGL.hpp>
+#include <MinecraftGL/Core/EntryPoint.hpp>
 
-class Sandbox : public MinecraftGL::Application
+#include "GameLayer.hpp"
+
+namespace MinecraftGL
 {
-public:
-
-	Sandbox()
+	class Game : public Application
 	{
-	}
+	public:
 
-	~Sandbox()
+		Game()
+		{
+			PushLayer(new GameLayer());
+		}
+	};
+
+	Application* CreateApplication()
 	{
+		return new Game();
 	}
-};
-
-MinecraftGL::Application* MinecraftGL::CreateApplication()
-{
-	return new Sandbox();
 }
