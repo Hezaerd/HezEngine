@@ -1,0 +1,6 @@
+[12:27:46] [warning] ENGINE: Initialized Log!
+[12:27:46] [info] ENGINE: Creating window MinecraftGL (1600, 900)
+[12:27:46] [info] GAME: Layer GameLayer attached
+[12:28:05] [info] ENGINE: Window closed.
+[12:28:05] [info] GAME: Layer GameLayer detached
+[12:28:05] [critical] ENGINE: Application destroyed.

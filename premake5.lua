@@ -1,8 +1,8 @@
 include "dependencies.lua"
 
-workspace "MinecraftGL"
+workspace "HezEngine"
     architecture "x64"
-    startproject "MinecraftGL-Game"
+    startproject "HezEngine-App"
 
     configurations
     {
@@ -18,16 +18,16 @@ workspace "MinecraftGL"
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
 group "Dependencies"
-    include "MinecraftGL-Engine/vendor/Glad"
-    include "MinecraftGL-Engine/vendor/GLFW"
-    include "MinecraftGL-Engine/vendor/imgui"
-    include "MinecraftGL-Engine/vendor/MGLMaths"
+    include "HezEngine/vendor/Glad"
+    include "HezEngine/vendor/GLFW"
+    include "HezEngine/vendor/imgui"
+    include "HezEngine/vendor/MGLMaths"
 group ""
 
 group "Core"
-    include "MinecraftGL-Engine"
+    include "HezEngine"
 group ""
 
 group "Game"
-    include "MinecraftGL-Game"
+    include "HezEngine-App"
 group ""
