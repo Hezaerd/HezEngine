@@ -12,7 +12,7 @@ namespace HezEngine
 	public:
 		static bool IsKeyPressed(KeyCode key);
 		static bool IsMouseButtonPressed(MouseCode button);
-		static MGLMaths::Vec2f GetMousePosition();
+		static HezMaths::Vec2f GetMousePosition();
 		static float GetMouseX();
 		static float GetMouseY();
 	};
