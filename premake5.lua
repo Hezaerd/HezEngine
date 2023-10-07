@@ -21,7 +21,6 @@ group "Dependencies"
     include "HezEngine/vendor/Glad"
     include "HezEngine/vendor/GLFW"
     include "HezEngine/vendor/imgui"
-    include "HezEngine/vendor/MGLMaths"
     include "HezEngine/vendor/HezMaths"
     
 group ""

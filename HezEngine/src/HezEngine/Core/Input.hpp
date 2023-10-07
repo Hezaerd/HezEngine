@@ -3,7 +3,7 @@
 #include "HezEngine/Core/KeyCodes.hpp"
 #include "HezEngine/Core/MouseCode.hpp"
 
-#include <MGLMaths/Vec/Vec2.hpp>
+#include <HezMaths/Vec/Vec2.hpp>
 
 namespace HezEngine
 {

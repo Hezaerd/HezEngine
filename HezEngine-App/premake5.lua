@@ -18,7 +18,6 @@ project "HezEngine-App"
         "%{wks.location}/HezEngine/vendor/spdlog/include",
         "%{wks.location}/HezEngine/vendor/glfw/include",
         "%{wks.location}/HezEngine/vendor/glad/include",
-        "%{wks.location}/HezEngine/vendor/MGLMaths",
         "%{wks.location}/HezEngine/vendor/HezMaths",
         "%{wks.location}/HezEngine/src"
     }
