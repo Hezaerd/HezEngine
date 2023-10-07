@@ -28,7 +28,8 @@ project "HezEngine"
         "%{IncludeDir.stb_image}",
         "%{IncludeDir.tinyobjloader}",
         "%{IncludeDir.ImGui}",
-        "%{IncludeDir.MGLMaths}"
+        "%{IncludeDir.MGLMaths}",
+        "%{IncludeDir.HezMaths}"
     }
 
     links
@@ -37,6 +38,7 @@ project "HezEngine"
         "GLFW",
         "ImGui",
         "MGLMaths",
+        "HezMaths",
         "opengl32.lib"
     }
 
