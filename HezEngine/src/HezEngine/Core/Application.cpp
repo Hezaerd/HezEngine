@@ -2,7 +2,7 @@
 #include "HezEngine/Core/Application.hpp"
 #include "HezEngine/Core/Log.hpp"
 
-#include "MGLMaths/MGLMaths.hpp"
+#include <HezMaths/HezMaths.hpp>
 
 namespace HezEngine
 {
