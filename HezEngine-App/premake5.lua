@@ -16,7 +16,7 @@ project "HezEngine-App"
     includedirs
     {
         "%{wks.location}/HezEngine/vendor/spdlog/include",
-        "%{wks.location}/HezEngine/vendor/glfw/include",
+        "%{wks.location}/HezEngine/vendor/GLFW/include",
         "%{wks.location}/HezEngine/vendor/glad/include",
         "%{wks.location}/HezEngine/vendor/HezMaths",
         "%{wks.location}/HezEngine/src"
