@@ -7,3 +7,6 @@
 [submodule "HezEngine/vendor/GLFW"]
 	path = HezEngine/vendor/GLFW
 	url = https://github.com/Hezaerd/glfw.git
+[submodule "HezEngine/vendor/ImGui"]
+	path = HezEngine/vendor/ImGui
+	url = https://github.com/Hezaerd/imgui.git
