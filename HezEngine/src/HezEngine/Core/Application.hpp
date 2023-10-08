@@ -8,6 +8,8 @@
 
 #include "HezEngine/Core/Timestep.hpp"
 
+#include "HezEngine/ImGui/ImGuiLayer.hpp"
+
 namespace HezEngine
 {
 	class Application
@@ -29,20 +31,15 @@ namespace HezEngine
 		bool OnWindowClose(WindowCloseEvent& pEvent);
 		bool OnWindowResize(WindowResizeEvent& pEvent);
 
-		void CalculateMouseOffset();
-
 	private:
 		Scope<Window> m_Window;
 		LayerStack m_LayerStack;
 
+		ImGuiLayer* m_ImGuiLayer;
+
 		bool m_Running = true;
 		bool m_Minimized = false;
 		float m_LastFrameTime;
-
-		//TODO: Remove or make it in a new class
-		//mouse input
-		float m_LastX, m_LastY, m_MouseX, m_MouseY, m_OffsetX, m_OffsetY;
-		bool m_FirstMouse = true;
 
 	private:
 		static Application* s_Instance;

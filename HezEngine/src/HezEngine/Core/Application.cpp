@@ -13,6 +13,9 @@ namespace HezEngine
 
 		m_Window = Window::Create();
 		m_Window->SetEventCallback(HEZ_BIND_EVENT_FN(Application::OnEvent));
+
+		m_ImGuiLayer = new ImGuiLayer();
+		PushOverlay(m_ImGuiLayer);
 	}
 
 	Application::~Application()
@@ -57,11 +60,20 @@ namespace HezEngine
 
 			if (!m_Minimized)
 			{
-				for (Layer* layer : m_LayerStack)
-					layer->OnUpdate(timestep);
+				{
+					for (Layer* layer : m_LayerStack)
+						layer->OnUpdate(timestep);
+				}
 
-				m_Window->OnUpdate();
+				m_ImGuiLayer->Begin();
+				{
+					for (Layer* layer : m_LayerStack)
+						layer->OnImGuiRender();
+				}
+				m_ImGuiLayer->End();
 			}
+
+			m_Window->OnUpdate();
 		}
 	}
 
@@ -83,23 +95,5 @@ namespace HezEngine
 
 		m_Minimized = false;
 		return false;
-	}
-
-	void Application::CalculateMouseOffset()
-	{
-		m_Window->ProcessMousePos(m_MouseX, m_MouseY);
-
-		if (m_FirstMouse)
-		{
-			m_LastX = m_MouseX;
-			m_LastY = m_MouseY;
-			m_FirstMouse = false;
-		}
-
-		m_OffsetX = m_MouseX - m_LastX;
-		m_OffsetY = m_LastY - m_MouseY;
-
-		m_LastX = m_MouseX;
-		m_LastY = m_MouseY;
 	}
 }

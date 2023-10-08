@@ -15,6 +15,7 @@ namespace HezEngine
 		virtual void OnAttach() {}
 		virtual void OnDetach() {}
 		virtual void OnUpdate(Timestep /*pStep*/) {}
+		virtual void OnImGuiRender() {}
 		virtual void OnEvent(Event& /*event*/) {}
 
 		const std::string& GetName() const { return m_name; }
