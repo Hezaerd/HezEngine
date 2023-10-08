@@ -20,7 +20,7 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 group "Dependencies"
     include "HezEngine/vendor/Glad"
     include "HezEngine/vendor/GLFW"
-    include "HezEngine/vendor/imgui"
+    include "HezEngine/vendor/ImGui"
     include "HezEngine/vendor/HezMaths"
     
 group ""
