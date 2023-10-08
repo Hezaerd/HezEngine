@@ -1,3 +1,4 @@
+include "vendor/premake/customization/solution_items.lua"
 include "dependencies.lua"
 
 workspace "HezEngine"
