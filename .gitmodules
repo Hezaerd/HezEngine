@@ -1,0 +1,12 @@
+[submodule "HezEngine/vendor/HezMaths"]
+	path = HezEngine/vendor/HezMaths
+	url = https://github.com/Hezaerd/HezMaths.git
+[submodule "HezEngine/vendor/spdlog"]
+	path = HezEngine/vendor/spdlog
+	url = https://github.com/gabime/spdlog.git
+[submodule "HezEngine/vendor/GLFW"]
+	path = HezEngine/vendor/GLFW
+	url = https://github.com/Hezaerd/glfw.git
+[submodule "HezEngine/vendor/ImGui"]
+	path = HezEngine/vendor/ImGui
+	url = https://github.com/Hezaerd/imgui.git

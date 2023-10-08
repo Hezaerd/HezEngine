@@ -2,8 +2,6 @@
 #include "HezEngine/Core/Application.hpp"
 #include "HezEngine/Core/Log.hpp"
 
-#include "MGLMaths/MGLMaths.hpp"
-
 namespace HezEngine
 {
 	Application* Application::s_Instance = nullptr;

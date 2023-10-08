@@ -3,7 +3,7 @@
 #include "HezEngine/Core/KeyCodes.hpp"
 #include "HezEngine/Core/MouseCode.hpp"
 
-#include <MGLMaths/Vec/Vec2.hpp>
+#include <HezMaths/Vec/Vec2.hpp>
 
 namespace HezEngine
 {
@@ -12,7 +12,7 @@ namespace HezEngine
 	public:
 		static bool IsKeyPressed(KeyCode key);
 		static bool IsMouseButtonPressed(MouseCode button);
-		static MGLMaths::Vec2f GetMousePosition();
+		static HezMaths::Vec2f GetMousePosition();
 		static float GetMouseX();
 		static float GetMouseY();
 	};

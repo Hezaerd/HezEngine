@@ -25,4 +25,8 @@ CMake/
 [Dd]ocs/
 [Ee]xample/
 [Ee]xamples/
-MinecraftGL-Game/MinecraftGL.log
+
+
+
+# Engine related files
+*.log
