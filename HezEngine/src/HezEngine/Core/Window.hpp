@@ -8,19 +8,13 @@
 
 namespace HezEngine
 {
-	struct WindowData
+	struct WindowProps
 	{
-		using EventCallbackFn = std::function<void(Event&)>;
-
 		std::string Title;
 		uint32_t Width;
 		uint32_t Height;
 
-		bool VSync = true;
-
-		EventCallbackFn EventCallback;
-
-		WindowData(const std::string& pTitle = "MinecraftGL", uint32_t pWidth = 1600, uint32_t pHeight = 900)
+		WindowProps(const std::string& pTitle = "HezEngine", uint32_t pWidth = 1600, uint32_t pHeight = 900)
 			: Title(pTitle), Width(pWidth), Height(pHeight)
 		{
 		}
@@ -31,33 +25,21 @@ namespace HezEngine
 	public:
 		using EventCallbackFn = std::function<void(Event&)>;
 
-		Window(const WindowData& pData);
-		~Window();
+		virtual ~Window() = default;
 
-		void OnUpdate();
+		virtual void OnUpdate() = 0;
 
-		unsigned int GetWidth() const { return m_Data.Width; }
-		unsigned int GetHeight() const { return m_Data.Height; }
+		virtual uint32_t GetWidth() const = 0;
+		virtual uint32_t GetHeight() const = 0;
 
-		void SetEventCallback(const EventCallbackFn& pCallback) { m_Data.EventCallback = pCallback; }
-		void ProcessMousePos(float& pXpos, float& pYpos);
+		// Window attributes
+		virtual void SetEventCallback(const EventCallbackFn& pCallback) = 0;
+		virtual void SetVSync(bool pEnabled) = 0;
+		virtual bool IsVSync() const = 0;
 
-		void SetVSync(bool pEnabled);
-		bool IsVSync() const;
+		virtual void* GetNativeWindow() const = 0;
 
-		void* GetNativeWindow() const { return m_Window; }
-
-		static Scope<Window> Create(const WindowData& pData = WindowData());
-
-		float GetAspectRatio() const;
-
-	private:
-		void Init(const WindowData& pData);
-		void Shutdown();
-
-	public:
-		GLFWwindow* m_Window;
-		WindowData m_Data;
+		static Scope<Window> Create(const WindowProps& pProps = WindowProps());
 	};
 
 	class Time
