@@ -18,6 +18,8 @@ namespace HezEngine
 		void OnDetach() override;
 		void OnEvent(Event& e) override;
 
+		//void OnImGuiRender() override;
+
 		void Begin();
 		void End();
 
@@ -25,7 +27,7 @@ namespace HezEngine
 
 		void SetDarkThemeColors();
 
-		uint32_t GetActiveID() const { return GImGui->ActiveId; }
+		uint32_t GetActiveID() const;
 	private:
 		bool m_BlockEvents = true;
 	};

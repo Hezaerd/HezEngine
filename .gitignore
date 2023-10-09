@@ -28,5 +28,10 @@ CMake/
 
 
 
-# Engine related files
+# Logging related files
 *.log
+
+
+
+# ImGui related files
+HezEngine-App/imgui.ini

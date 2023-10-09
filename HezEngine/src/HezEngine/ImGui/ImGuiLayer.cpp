@@ -54,6 +54,8 @@ namespace HezEngine
 		// Setup Platform/Renderer bindings
 		ImGui_ImplGlfw_InitForOpenGL(window, true);
 		ImGui_ImplOpenGL3_Init("#version 410");
+
+		HEZ_CORE_INFO("Layer {0} attached", GetName());
 	}
 
 	void ImGuiLayer::OnDetach()
@@ -61,6 +63,8 @@ namespace HezEngine
 		ImGui_ImplOpenGL3_Shutdown();
 		ImGui_ImplGlfw_Shutdown();
 		ImGui::DestroyContext();
+
+		HEZ_CORE_INFO("Layer {0} detached", GetName());
 	}
 
 	void ImGuiLayer::OnEvent(Event& e)
@@ -72,6 +76,12 @@ namespace HezEngine
 			e.Handled |= e.IsInCategory(EventCategoryKeyboard) & io.WantCaptureKeyboard;
 		}
 	}
+
+	//void ImGuiLayer::OnImGuiRender()
+	//{
+	//	static bool show = true;
+	//	ImGui::ShowDemoWindow(&show);
+	//}
 
 	void ImGuiLayer::Begin()
 	{
@@ -130,5 +140,10 @@ namespace HezEngine
 		colors[ImGuiCol_TitleBg] = ImVec4{ 0.15f, 0.1505f, 0.151f, 1.0f };
 		colors[ImGuiCol_TitleBgActive] = ImVec4{ 0.15f, 0.1505f, 0.151f, 1.0f };
 		colors[ImGuiCol_TitleBgCollapsed] = ImVec4{ 0.15f, 0.1505f, 0.151f, 1.0f };
+	}
+
+	uint32_t ImGuiLayer::GetActiveID() const
+	{
+		return GImGui->ActiveId;
 	}
 }

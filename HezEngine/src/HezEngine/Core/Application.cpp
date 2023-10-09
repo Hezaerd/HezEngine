@@ -56,8 +56,6 @@ namespace HezEngine
 			Timestep timestep = time - m_LastFrameTime;
 			m_LastFrameTime = time;
 
-			CalculateMouseOffset();
-
 			if (!m_Minimized)
 			{
 				{
