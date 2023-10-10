@@ -1,4 +1,4 @@
 # HezEngine
 
 ## How to clone
-`git clone --recrusive https://github.com/Hezaerd/HezEngine.git`
+`git clone --recursive https://github.com/Hezaerd/HezEngine.git`
