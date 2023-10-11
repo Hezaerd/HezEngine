@@ -19,6 +19,11 @@ JSON/
 
 
 
+# Python cache
+__pycache__/
+
+
+
 # Cleaning dependencies
 CMake/
 [Dd]oc/
