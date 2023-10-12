@@ -28,7 +28,8 @@ project "HezEngine"
         "%{IncludeDir.stb_image}",
         "%{IncludeDir.tinyobjloader}",
         "%{IncludeDir.ImGui}",
-        "%{IncludeDir.HezMaths}"
+        "%{IncludeDir.HezMaths}",
+        "%{IncludeDir.VulkanSDK}",
     }
 
     links
@@ -56,7 +57,21 @@ project "HezEngine"
         runtime "Debug"
         symbols "on"
 
+        links
+        {
+            "%{Lib.ShaderC_Debug}",
+            "%{Lib.SPRIV_Cross_Debug}",
+            "%{Lib.SPIRV_Cross_GLSL_Debug}",
+        }
+
     filter "configurations:Release"
         defines "HEZ_RELEASE"
         runtime "Release"
         optimize "on"
+
+        links
+        {
+            "%{Lib.ShaderC_Release}",
+            "%{Lib.SPRIV_Cross_Release}",
+            "%{Lib.SPIRV_Cross_GLSL_Release}",
+        }
