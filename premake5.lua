@@ -10,6 +10,11 @@ workspace "HezEngine"
         "Debug",
         "Release"
     }
+    
+    solution_items
+    {
+        ".editorconfig"
+    }
 
     flags
     {
