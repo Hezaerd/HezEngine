@@ -9,9 +9,11 @@ from SetupPython import PythonConfiguration as PythonConfig
 PythonConfig.Validate()
 
 from SetupPremake import PremakeConfiguration as PremakeConfig
+from SetupVulkan import VulkanConfiguration as VulkanConfig
 os.chdir('./../') # Move to the root directory
 
 premakeInstalled = PremakeConfig.Validate()
+VulkanConfig.Validate()
 
 elapsed = time.time()
 print("\nUpdating submodules...")
