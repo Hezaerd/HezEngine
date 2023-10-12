@@ -22,47 +22,47 @@ def GetUserEnvVariable(name):
     except WindowsError:
         return None
     
-def DownloadFromUrl(url, filepath):
+def DownloadFile(url, filepath):
     path = filepath
     filepath = os.path.abspath(filepath)
     os.makedirs(os.path.dirname(filepath), exist_ok=True)
-
-    if(type(url) is list):
+            
+    if (type(url) is list):
         for url_option in url:
             print("Downloading", url_option)
             try:
-                DownloadFromUrl(url_option, path)
+                DownloadFile(url_option, filepath)
                 return
             except urllib.error.URLError as e:
-                print(f"URL Error encountered: {e.reason}. Proceeding with another URL option.\n\n")
-                os.remove(path)
+                print(f"URL Error encountered: {e.reason}. Proceeding with backup...\n\n")
+                os.remove(filepath)
                 pass
             except urllib.error.HTTPError as e:
-                print(f"HTTP Error encountered: {e.reason}. Proceeding with another URL option.\n\n")
-                os.remove(path)
+                print(f"HTTP Error  encountered: {e.code}. Proceeding with backup...\n\n")
+                os.remove(filepath)
                 pass
             except:
-                print(f"Something went wrong. Proceeding with another URL option.\n\n")
-                os.remove(path)
+                print(f"Something went wrong. Proceeding with backup...\n\n")
+                os.remove(filepath)
                 pass
-            raise ValueError(f"Failed to download {filepath}")
-        if not(type(url) is str):
-            raise TypeError("Argument 'url' must be of type list or string")
-        
-        with open(filepath, 'wb') as f:
-            headers = {'User-Agent': "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.97 Safari/537.36"}
-            response = requests.get(url, headers=headers, stream=True)
-            total = response.headers.get('content-length')
+        raise ValueError(f"Failed to download {filepath}")
+    if not(type(url) is str):
+        raise TypeError("Argument 'url' must be of type list or string")
 
-            if total is None:
-                f.write(response.content)
-            else:
-                downloaded = 0
-                total = int(total)
-                startTime = time.time()
-                for data in response.iter_content(chunk_size=max(int(total/1000), 1024*1024)):
-                    downloaded += len(data)
-                    f.write(data)
+    with open(filepath, 'wb') as f:
+        headers = {'User-Agent': "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.97 Safari/537.36"}
+        response = requests.get(url, headers=headers, stream=True)
+        total = response.headers.get('content-length')
+
+        if total is None:
+            f.write(response.content)
+        else:
+            downloaded = 0
+            total = int(total)
+            startTime = time.time()
+            for data in response.iter_content(chunk_size=max(int(total/1000), 1024*1024)):
+                downloaded += len(data)
+                f.write(data)
                 
                 try:
                     done = int(50*downloaded/total) if downloaded < total else 50
