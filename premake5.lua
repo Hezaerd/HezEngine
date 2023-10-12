@@ -1,4 +1,4 @@
-include "vendor/premake/customization/solution_items.lua"
+include "vendor/premake/premake_customization/solution_items.lua"
 include "dependencies.lua"
 
 workspace "HezEngine"
@@ -22,14 +22,17 @@ group "Dependencies"
     include "HezEngine/vendor/Glad"
     include "HezEngine/vendor/GLFW"
     include "HezEngine/vendor/ImGui"
-    include "HezEngine/vendor/HezMaths"
-    
+    include "HezEngine/vendor/HezMaths"   
+group ""
+
+group "Premake"
+    include "vendor/premake"
 group ""
 
 group "Core"
     include "HezEngine"
 group ""
 
-group "Game"
+group "Editor"
     include "HezEngine-App"
 group ""
