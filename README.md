@@ -14,7 +14,7 @@ Start by cloning the repo with `git clone --recursive https://github.com/Hezaerd
 3. After installation, run the [Setup.bat](https://github.com/Hezaerd/HezEngine/blob/main/scripts/Setub.bat) file again. If the Vulkan SDK is installed properly, you will need to download the Vulkan SDK Debug Libraries. The script will prompt the user to download the Debug Libraries.
 4. After downloading and installing everything, the [GenerateProject.bat](https://github.com/Hezaerd/HezEngine/blob/main/scripts/GenerateProjects.bat) will be executed automatically. This will generate the Visual Studio solution and project files.
 
-*Tips : No need to rerun the entire `setup.bat` after! Just build the `Premake` project in Visual Studio to regenerate the solution and project files.*
+*Tips : No need to rerun the entire `setup.bat` after! Just regenerate the `Premake` project in Visual Studio to regenerate the solution and project files.*
 
 ***
 
