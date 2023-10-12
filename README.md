@@ -16,6 +16,7 @@ Start by cloning the repo with `git clone --recursive https://github.com/Hezaerd
 
 *Tips : No need to rerun the entire `setup.bat` after! Just build the `Premake` project in Visual Studio to regenerate the solution and project files.*
 
+***
 
 ### How to install the Vulkan SDK Debug Libraries
 HezEngine requires Vulkan SDK 1.3.216.0 to be installed, and the VULKAN_SDK environment variable set to your installation path. If you do not have the correct version installed, the Setup script should offer to download and install the correct version for you.
