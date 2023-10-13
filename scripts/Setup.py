@@ -12,19 +12,16 @@ from SetupPremake import PremakeConfiguration as PremakeConfig
 from SetupVulkan import VulkanConfiguration as VulkanConfig
 os.chdir('./../') # Move to the root directory
 
-premakeInstalled = PremakeConfig.Validate()
+PremakeConfig.Validate()
 VulkanConfig.Validate()
 
 elapsed = time.time()
-print("\nUpdating submodules...")
+print("\n\nUpdating submodules...")
 subprocess.run(["git", "submodule", "update", "--init", "--recursive"])
-print(f"Submodules updated in {time.time() - elapsed} seconds")
+print(f"\n  Submodules updated in {round(time.time() - elapsed, 2)} seconds")
 
-if (premakeInstalled):
-    if platform.system() == "Windows":
-        print("\nGenerating Visual Studio 2022 project files...")
-        subprocess.call([os.path.abspath("./scripts/GenerateProjects.bat"), "nopause"])
+if platform.system() == "Windows":
+    print("\n\nGenerating Visual Studio 2022 project files using premake5...")
+    subprocess.call([os.path.abspath("./scripts/GenerateProjects.bat"), "nopause"])
 
-        print("\nSetup completed!")
-    else:
-        print("\nHezEngine requires Premake5 to generate project files.")
+    print("\n\nSetup completed!\n")

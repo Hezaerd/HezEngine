@@ -12,12 +12,13 @@ class PremakeConfiguration:
 
     @classmethod
     def Validate(self):
+        print("\n\nChecking if premake is installed...")
         if (not self.CheckPremake()):
-            print("Premake is not installed.")
-            return False
+            print("  Premake is not installed.")
+            return
         
-        print(f"Correct premake version {self.premakeVersion} located at {os.path.abspath(self.premakeDirectory)}")
-        return True
+        print(f"\n  Correct premake version {self.premakeVersion} located at {os.path.abspath(self.premakeDirectory)}")
+        return
 
     @classmethod
     def CheckPremake(self):
@@ -31,23 +32,23 @@ class PremakeConfiguration:
     def DownloadPremake(self):
         permission = False
         while not permission :
-            reply = str(input("Premake is not installed. Install it now? [Y/N]")).lower().strip()[:1]
+            reply = str(input("\n  Premake is not installed. Install it now? [Y/N]")).lower().strip()[:1]
             if reply == 'n':
                 return False
             permission = (reply == 'y')
 
         # premake executable
         premakePath = f"{self.premakeDirectory}/premake-{self.premakeVersion}-windows.zip"
-        print(f"Downloading premake from {self.premakeZipUrls} to {premakePath}")
+        print(f"  Downloading premake from {self.premakeZipUrls} to {premakePath}")
         Utils.DownloadFile(self.premakeZipUrls, premakePath)
-        print(f"Unzipping {premakePath}")
+        print(f"  Unzipping {premakePath}")
         Utils.UnzipFile(premakePath, self.premakeDirectory)
-        print(f"Premake {self.premakeVersion} has been installed to {self.premakeDirectory}")
+        print(f"  Premake {self.premakeVersion} has been installed to {self.premakeDirectory}")
 
         # premake license
         premakeLicensePath = f"{self.premakeDirectory}/LICENSE.txt"
-        print(f"Downloading premake license from {self.premakeLicenseUrl} to {premakeLicensePath}")
+        print(f"  Downloading premake license from {self.premakeLicenseUrl} to {premakeLicensePath}")
         Utils.DownloadFile(self.premakeLicenseUrl, premakeLicensePath)
-        print(f"Premake license has been installed to {self.premakeDirectory}")
+        print(f"  Premake license has been installed to {self.premakeDirectory}")
 
         return True
