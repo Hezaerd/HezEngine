@@ -1,6 +1,6 @@
 #include "hezpch.hpp"
 #include "HezEngine/Core/Application.hpp"
-#include "HezEngine/Core/Log.hpp"
+#include "HezEngine/Core/Debug/Debug.hpp"
 
 namespace HezEngine
 {

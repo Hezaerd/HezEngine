@@ -31,5 +31,4 @@ namespace HezEngine
 	}
 }
 
-#include "HezEngine/Core/Assert.hpp"
-#include "HezEngine/Core/Log.hpp"
+#include "HezEngine/Core/Debug/Debug.hpp"
