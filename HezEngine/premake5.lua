@@ -21,8 +21,8 @@ project "HezEngine"
 
     includedirs
     {
-        "src",
-        "vendor/spdlog/include",
+        "src/",
+        "vendor/",
         "%{IncludeDir.Glad}",
         "%{IncludeDir.GLFW}",
         "%{IncludeDir.stb_image}",
