@@ -4,6 +4,8 @@
 #include "spdlog/sinks/stdout_color_sinks.h"
 #include "spdlog/sinks/basic_file_sink.h"
 
+#include <filesystem>
+
 namespace HezEngine
 {
 	Ref<spdlog::logger> Log::s_CoreLogger;
@@ -11,21 +13,40 @@ namespace HezEngine
 
 	void Log::Init()
 	{
-		std::vector<spdlog::sink_ptr> logSinks;
-		logSinks.emplace_back(CreateRef<spdlog::sinks::stdout_color_sink_mt>());
-		logSinks.emplace_back(CreateRef<spdlog::sinks::basic_file_sink_mt>("HezEngine.log", true));
+		std::string logsDirectory = "logs";
+		if (!std::filesystem::exists(logsDirectory))
+			std::filesystem::create_directory(logsDirectory);
 
-		logSinks[0]->set_pattern("%^[%T] %n: %v%$");
-		logSinks[1]->set_pattern("[%T] [%l] %n: %v");
+		std::vector<spdlog::sink_ptr> hezengineSinks =
+		{
+			CreateRef<spdlog::sinks::basic_file_sink_mt>("logs/HezEngine.log", true),
+			CreateRef<spdlog::sinks::stdout_color_sink_mt>()
+		};
 
-		s_CoreLogger = CreateRef<spdlog::logger>("ENGINE", begin(logSinks), end(logSinks));
-		spdlog::register_logger(s_CoreLogger);
+		std::vector<spdlog::sink_ptr> clientSinks =
+		{
+			CreateRef<spdlog::sinks::basic_file_sink_mt>("logs/HezEngine-Editor.log", true),
+			CreateRef<spdlog::sinks::stdout_color_sink_mt>()
+		};
+
+		hezengineSinks[0]->set_pattern("[%T] [%l] %n: %v");
+		clientSinks[0]->set_pattern("[%T] [%l] %n: %v");
+
+		hezengineSinks[1]->set_pattern("%^[%T] %n: %v%$");
+		clientSinks[1]->set_pattern("%^[%T] %n: %v%$");
+
+		s_CoreLogger = CreateRef<spdlog::logger>("HezEngine", begin(hezengineSinks), end(hezengineSinks));
 		s_CoreLogger->set_level(spdlog::level::trace);
-		s_CoreLogger->flush_on(spdlog::level::trace);
 
-		s_ClientLogger = CreateRef<spdlog::logger>("EDITOR", begin(logSinks), end(logSinks));
-		spdlog::register_logger(s_ClientLogger);
+		s_ClientLogger = CreateRef<spdlog::logger>("HezEngine-Editor", begin(clientSinks), end(clientSinks));
 		s_ClientLogger->set_level(spdlog::level::trace);
-		s_ClientLogger->flush_on(spdlog::level::trace);
+	}
+
+	void Log::Shutdown()
+	{
+		s_ClientLogger.reset();
+		s_CoreLogger.reset();
+		
+		spdlog::drop_all();
 	}
 }
