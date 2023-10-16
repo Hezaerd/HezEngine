@@ -2,6 +2,7 @@
 
 build/
 **/bin/
+!vendor/premake/bin
 bin-int/
 Intermediates/
 
