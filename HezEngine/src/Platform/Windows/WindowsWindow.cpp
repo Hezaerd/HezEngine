@@ -162,10 +162,10 @@ namespace HezEngine
 
 	void WindowsWindow::SetVSync(bool pEnabled)
 	{
-		if (pEnabled)
-			glfwSwapInterval(1);
-		else
-			glfwSwapInterval(0);
+		//if (pEnabled)
+		//	glfwSwapInterval(1);
+		//else
+		//	glfwSwapInterval(0);
 
 		m_Data.VSync = pEnabled;
 	}

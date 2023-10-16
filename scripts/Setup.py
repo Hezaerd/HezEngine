@@ -1,27 +1,40 @@
 import os
-import subprocess
-import platform
-import time
-
-from SetupPython import PythonConfiguration as PythonConfig
+import CheckPython
 
 # Check if we have everything we need for the setup
-PythonConfig.Validate()
+CheckPython.ValidatePackages(['requests', 'fake-useragent', 'colorama'])
 
-from SetupPremake import PremakeConfiguration as PremakeConfig
-from SetupVulkan import VulkanConfiguration as VulkanConfig
-os.chdir('./../') # Move to the root directory
+print("") # New line
 
-PremakeConfig.Validate()
-VulkanConfig.Validate()
+import colorama
+from colorama import Fore, Style, Back
 
-elapsed = time.time()
-print("\n\nUpdating submodules...")
-subprocess.run(["git", "submodule", "update", "--init", "--recursive"])
-print(f"\n  Submodules updated in {round(time.time() - elapsed, 2)} seconds")
+# Move to the root directory
+os.chdir('../') 
 
-if platform.system() == "Windows":
-    print("\n\nGenerating Visual Studio 2022 project files using premake5...")
-    subprocess.call([os.path.abspath("./scripts/GenerateProjects.bat"), "nopause"])
+# Init colorama lib
+colorama.init(autoreset=True, convert=True)
 
-    print("\n\nSetup completed!\n")
+import CheckVulkan
+
+if not CheckVulkan.CheckVulkanSDK():
+    print(f"{Style.BRIGHT}{Back.RED}Vulkan SDK not installed.")
+    exit()
+
+if CheckVulkan.CheckVulkanSDKDebugLibs():
+    print(f"{Style.BRIGHT}{Fore.GREEN}Vulkan SDK debug libs found.")
+
+print("") # New line
+
+# Check git submodules
+import CheckSubmodules
+CheckSubmodules.UpdateSubmodules()
+
+
+print("") # New line
+
+# Generate project
+import GenerateProject
+GenerateProject.GenerateProject()
+
+print("") # New line

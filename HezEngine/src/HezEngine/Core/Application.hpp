@@ -35,7 +35,7 @@ namespace HezEngine
 		Scope<Window> m_Window;
 		LayerStack m_LayerStack;
 
-		ImGuiLayer* m_ImGuiLayer;
+		//ImGuiLayer* m_ImGuiLayer;
 
 		bool m_Running = true;
 		bool m_Minimized = false;

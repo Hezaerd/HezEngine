@@ -17,8 +17,6 @@ void EditorLayer::OnDetach()
 
 void EditorLayer::OnUpdate(HezEngine::Timestep /*pStep*/)
 {
-	glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
-	glClear(GL_COLOR_BUFFER_BIT);
 }
 
 void EditorLayer::OnEvent(HezEngine::Event& /*pEvent*/)

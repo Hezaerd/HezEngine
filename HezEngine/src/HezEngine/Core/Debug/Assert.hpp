@@ -1,7 +1,7 @@
 #pragma once
 
 #include "HezEngine/Core/Base.hpp"
-#include "HezEngine/Core/Log.hpp"
+#include "HezEngine/Core/Debug/Log.hpp"
 #include <filesystem>
 
 #define HEZ_INTERNAL_ASSERT_IMPL(type, check, msg, ...) { if(!(check)) { HEZ##type##ERROR(msg, __VA_ARGS__); HEZ_DEBUGBREAK(); } }

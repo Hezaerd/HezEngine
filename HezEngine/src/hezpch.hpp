@@ -14,8 +14,6 @@
 
 #include "HezEngine/Core/Base.hpp"
 
-#include "HezEngine/Core/Log.hpp"
-
 #ifdef MGL_PLATFORM_WINDOW
 #include <Windows.h>
 #endif

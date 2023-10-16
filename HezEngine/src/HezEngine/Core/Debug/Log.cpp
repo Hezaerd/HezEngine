@@ -1,5 +1,5 @@
 #include "hezpch.hpp"
-#include "HezEngine/Core/Log.hpp"
+#include "HezEngine/Core/Debug/Log.hpp"
 
 #include "spdlog/sinks/stdout_color_sinks.h"
 #include "spdlog/sinks/basic_file_sink.h"
@@ -11,27 +11,19 @@ namespace HezEngine
 
 	void Log::Init()
 	{
-		// TODO: finish .ini parsing lib to file name
-		// something like logging.ini
-		// [Core]
-		// filename = HezEngine.log
-		// [Logger]
-		// coreLogger = ENGINE
-		// clientLogger = EDITOR
-
 		std::vector<spdlog::sink_ptr> logSinks;
-		logSinks.emplace_back(std::make_shared<spdlog::sinks::stdout_color_sink_mt>());
-		logSinks.emplace_back(std::make_shared<spdlog::sinks::basic_file_sink_mt>("HezEngine.log", true));
+		logSinks.emplace_back(CreateRef<spdlog::sinks::stdout_color_sink_mt>());
+		logSinks.emplace_back(CreateRef<spdlog::sinks::basic_file_sink_mt>("HezEngine.log", true));
 
 		logSinks[0]->set_pattern("%^[%T] %n: %v%$");
 		logSinks[1]->set_pattern("[%T] [%l] %n: %v");
 
-		s_CoreLogger = std::make_shared<spdlog::logger>("ENGINE", begin(logSinks), end(logSinks));
+		s_CoreLogger = CreateRef<spdlog::logger>("ENGINE", begin(logSinks), end(logSinks));
 		spdlog::register_logger(s_CoreLogger);
 		s_CoreLogger->set_level(spdlog::level::trace);
 		s_CoreLogger->flush_on(spdlog::level::trace);
 
-		s_ClientLogger = std::make_shared<spdlog::logger>("EDITOR", begin(logSinks), end(logSinks));
+		s_ClientLogger = CreateRef<spdlog::logger>("EDITOR", begin(logSinks), end(logSinks));
 		spdlog::register_logger(s_ClientLogger);
 		s_ClientLogger->set_level(spdlog::level::trace);
 		s_ClientLogger->flush_on(spdlog::level::trace);
