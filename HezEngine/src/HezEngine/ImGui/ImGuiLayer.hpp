@@ -2,33 +2,18 @@
 
 #include "HezEngine/Core/Layer.hpp"
 
-#include "HezEngine/Events/AppEvent.hpp"
-#include "HezEngine/Events/KeyEvent.hpp"
-#include "HezEngine/Events/MouseEvent.hpp"
-
 namespace HezEngine
 {
 	class ImGuiLayer : public Layer
 	{
 	public:
-		ImGuiLayer();
-		~ImGuiLayer() = default;
-
-		void OnAttach() override;
-		void OnDetach() override;
-		void OnEvent(Event& e) override;
-
-		//void OnImGuiRender() override;
-
-		void Begin();
-		void End();
-
-		void BlockEvents(bool block) { m_BlockEvents = block; }
+		virtual void Begin() = 0;
+		virtual void End() = 0;
 
 		void SetDarkThemeColors();
 
-		uint32_t GetActiveID() const;
+		static ImGuiLayer* Create();
+
 	private:
-		bool m_BlockEvents = true;
 	};
 }
