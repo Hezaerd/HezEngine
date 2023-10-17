@@ -13,5 +13,5 @@ int main(int /*argc*/, char** /*argv*/)
 	auto app = HezEngine::CreateApplication();
 	app->Run();
 	delete app;
-	HEZ_CORE_CRITICAL("Application destroyed.");
+	HEZ_CORE_FATAL("Application destroyed.");
 }

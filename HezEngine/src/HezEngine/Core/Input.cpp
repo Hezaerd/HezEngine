@@ -21,7 +21,7 @@ namespace HezEngine
 		return state == GLFW_PRESS;
 	}
 
-	HezMaths::Vec2f Input::GetMousePosition()
+	glm::vec2 Input::GetMousePosition()
 	{
 		auto window = static_cast<GLFWwindow*>(Application::Get().GetWindow().GetNativeWindow());
 		double xpos, ypos;

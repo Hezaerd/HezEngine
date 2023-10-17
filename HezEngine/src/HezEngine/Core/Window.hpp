@@ -3,21 +3,21 @@
 #include "HezEngine/Core/Base.hpp"
 #include "HezEngine/Events/Event.hpp"
 
-#include "GLFW/glfw3.h"
-#include <glad/glad.h>
+// Note(Hezaerd):	This ensures that the first inclusion of GLFW defines
+//					Vulkan exclusive procs before include guards trip.
+#include <vulkan/vulkan.h>
+#include <GLFW/glfw3.h>
 
 namespace HezEngine
 {
-	struct WindowProps
+	struct WindowSpecification
 	{
-		std::string Title;
-		uint32_t Width;
-		uint32_t Height;
+		std::string Title = "HezEngine";
+		uint32_t Width = 1600;
+		uint32_t Height = 900;
 
-		WindowProps(const std::string& pTitle = "HezEngine", uint32_t pWidth = 1600, uint32_t pHeight = 900)
-			: Title(pTitle), Width(pWidth), Height(pHeight)
-		{
-		}
+		bool VSync = true;
+		bool Fullscreen = false;
 	};
 
 	class Window
@@ -25,26 +25,53 @@ namespace HezEngine
 	public:
 		using EventCallbackFn = std::function<void(Event&)>;
 
-		virtual ~Window() = default;
+		Window(const WindowSpecification& pSpecification);
+		~Window();
 
-		virtual void OnUpdate() = 0;
+		void Init();
+		void ProcessEvents();
+		void SwapBuffers();
 
-		virtual uint32_t GetWidth() const = 0;
-		virtual uint32_t GetHeight() const = 0;
+		inline uint32_t GetWidth() { return m_Data.Width; }
+		inline uint32_t GetHeight() { return m_Data.Height; }
+
+		inline std::pair<uint32_t, uint32_t> GetSize() const { return { m_Data.Width, m_Data.Height }; }
+		std::pair<float, float> GetWindowPos() const;
 
 		// Window attributes
-		virtual void SetEventCallback(const EventCallbackFn& pCallback) = 0;
-		virtual void SetVSync(bool pEnabled) = 0;
-		virtual bool IsVSync() const = 0;
+		void SetEventCallback(const EventCallbackFn& pCallback);
+		void SetVSync(bool pEnabled);
+		bool IsVSync() const;
+		void SetResizable(bool pResizable) const;
 
-		virtual void* GetNativeWindow() const = 0;
+		void Maximize();
+		void CenterWindow();
 
-		static Scope<Window> Create(const WindowProps& pProps = WindowProps());
-	};
+		inline const std::string& GetTitle() const { return m_Data.Title; }
+		void SetTitle(const std::string& pTitle);
 
-	class Time
-	{
+		inline void* GetNativeWindow() const { return m_Window; }
+
 	public:
-		static float GetTime();
+		static Window* Create(const WindowSpecification& pSpecification = WindowSpecification());
+
+	private:
+		void Shutdown();
+
+	private:
+		struct WindowData
+		{
+			std::string Title;
+			uint32_t Width, Height;
+
+			EventCallbackFn EventCallback;
+		};
+
+		WindowData m_Data;
+		WindowSpecification m_Specification;
+
+	private:
+		GLFWwindow* m_Window;
+		float m_LastFrameTime = 0.0f;
 	};
 }

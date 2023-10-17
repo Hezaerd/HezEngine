@@ -15,7 +15,7 @@ namespace HezEngine
 		s_RendererAPI->SetViewport(pX, pY, pWidth, pHeight);
 	}
 
-	void RenderCommand::SetClearColor(const HezMaths::Vec4f& pColor)
+	void RenderCommand::SetClearColor(const glm::vec4& pColor)
 	{
 		s_RendererAPI->SetClearColor(pColor);
 	}

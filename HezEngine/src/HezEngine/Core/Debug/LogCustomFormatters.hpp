@@ -1,13 +1,13 @@
 #pragma once
 
-#include <HezMaths/HezMaths.hpp>
+#include <glm/glm.hpp>
 
 #include <spdlog/fmt/fmt.h>
 
 namespace fmt
 {
 	template<>
-	struct formatter<HezMaths::Vec2f>
+	struct formatter<glm::vec2>
 	{
 		char presentation = 'f';
 
@@ -22,7 +22,7 @@ namespace fmt
 		}
 
 		template <typename FormatContext>
-		auto format(const HezMaths::Vec2f& pVec, FormatContext& pCtx) const -> decltype(pCtx.out())
+		auto format(const glm::vec2& pVec, FormatContext& pCtx) const -> decltype(pCtx.out())
 		{
 			return presentation == 'f'
 				? fmt::format_to(pCtx.out(), "({:.3f}, {:.3f})", pVec.x, pVec.y)
@@ -31,7 +31,7 @@ namespace fmt
 	};
 
 	template<>
-	struct formatter<HezMaths::Vec3f>
+	struct formatter<glm::vec3>
 	{
 		char presentation = 'f';
 
@@ -46,7 +46,7 @@ namespace fmt
 		}
 
 		template <typename FormatContext>
-		auto format(const HezMaths::Vec3f& pVec, FormatContext& pCtx) const -> decltype(pCtx.out())
+		auto format(const glm::vec3& pVec, FormatContext& pCtx) const -> decltype(pCtx.out())
 		{
 			return presentation == 'f'
 				? fmt::format_to(pCtx.out(), "({:.3f}, {:.3f}, {:.3f})", pVec.x, pVec.y, pVec.z)
@@ -55,7 +55,7 @@ namespace fmt
 	};
 
 	template<>
-	struct formatter<HezMaths::Vec4f>
+	struct formatter<glm::vec4>
 	{
 		char presentation = 'f';
 
@@ -70,7 +70,7 @@ namespace fmt
 		}
 
 		template <typename FormatContext>
-		auto format(const HezMaths::Vec4f& pVec, FormatContext& pCtx) const -> decltype(pCtx.out())
+		auto format(const glm::vec4& pVec, FormatContext& pCtx) const -> decltype(pCtx.out())
 		{
 			return presentation == 'f'
 				? fmt::format_to(pCtx.out(), "({:.3f}, {:.3f}, {:.3f}, {:.3f})", pVec.x, pVec.y, pVec.z, pVec.w)

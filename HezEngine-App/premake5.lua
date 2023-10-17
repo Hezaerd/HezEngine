@@ -1,26 +1,19 @@
 project "HezEngine-App"
     kind "ConsoleApp"
-    language "C++"
-    cppdialect "C++17"
-    staticruntime "off"
 
     targetdir ("%{wks.location}/build/bin/" .. outputdir .. "/%{prj.name}")
     objdir ("%{wks.location}/build/bin-int/" .. outputdir .. "/%{prj.name}")
 
-    files
-    {
+    files {
         "src/**.hpp",
         "src/**.cpp",
     }
 
-    includedirs
-    {
-        "%{wks.location}/HezEngine/src",
-        "%{wks.location}/HezEngine/vendor/spdlog/include",
-        "%{wks.location}/HezEngine/vendor",
-        "%{wks.location}/HezEngine/vendor/GLFW/include",
-        "%{wks.location}/HezEngine/vendor/glad/include",
-        "%{wks.location}/HezEngine/vendor/HezMaths",
+    includedirs {
+        "src/",
+
+        "%{wks.location}/HezEngine/src/",
+        "%{wks.location}/HezEngine/vendor/",
     }
 
     links
@@ -32,19 +25,17 @@ project "HezEngine-App"
 
     filter "system:windows"
         systemversion "latest"
-
-        defines
-        {
-            "HEZ_PLATFORM_WINDOWS",
-            "GLFW_INCLUDE_NONE"
-        }
+        defines { "HEZ_PLATFORM_WINDOWS", }
 
     filter "configurations:Debug"
-        defines "HEZ_DEBUG"
-        runtime "Debug"
         symbols "On"
+        defines { "HEZ_DEBUG" }
+        ProcessDependencies("Debug")
 
     filter "configurations:Release"
-        defines "HEZ_RELEASE"
-        runtime "Release"
         optimize "On"
+        defines { "HEZ_RELEASE" }
+        ProcessDependencies("Release")
+
+    filter "files:**.hlsl"
+        flags { "ExcludeFromBuild" }

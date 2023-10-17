@@ -1,8 +1,5 @@
 project "HezEngine"
     kind "StaticLib"
-    language "C++"
-    cppdialect "C++17"
-    staticruntime "off"
 
     targetdir ("%{wks.location}/build/bin/" .. outputdir .. "/%{prj.name}")
     objdir ("%{wks.location}/build/bin-int/" .. outputdir .. "/%{prj.name}")
@@ -10,68 +7,37 @@ project "HezEngine"
     pchheader "hezpch.hpp"
     pchsource "src/hezpch.cpp"
 
-    files
-    {
+    files {
         "src/**.hpp",
         "src/**.cpp",
-        "vendor/stb_image/**.h",
-        "vendor/stb_image/**.cpp",
-        "vendor/tinyobjloader/**.h",
+
+        "Platform/" .. firstToUpper(os.target()) .. "/**.hpp",
+        "Platform/" .. firstToUpper(os.target()) .. "/**.cpp",
+
+        "vendor/VulkanMemoryAllocator/**.h",
+        "vendor/VulkanMemoryAllocator/**.cpp",
     }
 
-    includedirs
-    {
-        "src/",
-        "vendor/",
-        "%{IncludeDir.Glad}",
-        "%{IncludeDir.GLFW}",
-        "%{IncludeDir.stb_image}",
-        "%{IncludeDir.tinyobjloader}",
-        "%{IncludeDir.ImGui}",
-        "%{IncludeDir.HezMaths}",
-        "%{IncludeDir.VulkanSDK}",
-    }
+    includedirs { "src/", "vendor/", }
 
-    links
-    {
-        "Glad",
-        "GLFW",
-        "ImGui",
-        "HezMaths",
-        "opengl32.lib"
-    }
+    IncludeDependencies()
 
-    warnings "Extra"
+    defines { "GLM_FORCE_DEPTH_ZERO_TO_ONE", }
+
+    filter "files:vendor/VulkanMemoryAllocator/**.cpp"
+        flags { "NoPCH" }
 
     filter "system:windows"
         systemversion "latest"
+        defines { "HEZ_PLATFORM_WINDOWS" }
 
-        defines
-        {
-            "HEZ_PLATFORM_WINDOWS",
-            "GLFW_INCLUDE_NONE"
-        }
+    filter "system:linux"
+        defines { "HEZ_PLATFORM_LINUX" }
 
     filter "configurations:Debug"
-        defines "HEZ_DEBUG"
-        runtime "Debug"
-        symbols "on"
-
-        links
-        {
-            "%{Lib.ShaderC_Debug}",
-            "%{Lib.SPRIV_Cross_Debug}",
-            "%{Lib.SPIRV_Cross_GLSL_Debug}",
-        }
+        symbols "On"
+        defines { "HEZ_DEBUG", "_DEBUG", }
 
     filter "configurations:Release"
-        defines "HEZ_RELEASE"
-        runtime "Release"
-        optimize "on"
-
-        links
-        {
-            "%{Lib.ShaderC_Release}",
-            "%{Lib.SPRIV_Cross_Release}",
-            "%{Lib.SPIRV_Cross_GLSL_Release}",
-        }
+        optimize "On"
+        defines { "HEZ_RELEASE", "NDEBUG", }

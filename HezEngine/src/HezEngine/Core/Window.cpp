@@ -1,19 +1,34 @@
 #include "hezpch.hpp"
 #include "HezEngine/Core/Window.hpp"
 
-#ifdef HEZ_PLATFORM_WINDOWS
-#include "Platform/Windows/WindowsWindow.hpp"
-#endif
-
 namespace HezEngine
 {
-	Scope<Window> Window::Create(const WindowProps& pProps)
+	static void GLFWErrorCallback(int error, const char* description)
 	{
-#ifdef HEZ_PLATFORM_WINDOWS
-		return CreateScope<WindowsWindow>(pProps);
-#else
-		HEZ_CORE_ASSERT(false, "Unknown platform!");
-		return nullptr;
-#endif
+		HEZ_CORE_ERROR_TAG("GLFW", "GLFW Error ({0}): {1}", error, description);
+	}
+
+	static bool s_GLFWInitialized = false;
+
+	Window* Window::Create(const WindowSpecification& pSpecification)
+	{
+		return new Window(pSpecification);
+	}
+
+	Window::Window(const WindowSpecification& pSpecification)
+		: m_Specification(pSpecification)
+	{
+	}
+
+	Window::~Window()
+	{
+		Shutdown();
+	}
+
+	void Window::Init()
+	{
+		m_Data.Title = m_Specification.Title;
+		m_Data.Width = m_Specification.Width;
+		m_Data.Height = m_Specification.Height;
 	}
 }

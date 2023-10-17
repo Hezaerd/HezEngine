@@ -27,12 +27,14 @@ namespace HezEngine
 		static Application& Get() { return *s_Instance; }
 		Window& GetWindow() { return *m_Window; }
 
+		float GetTime();
+
 	private:
 		bool OnWindowClose(WindowCloseEvent& pEvent);
 		bool OnWindowResize(WindowResizeEvent& pEvent);
 
 	private:
-		Scope<Window> m_Window;
+		Window* m_Window;
 		LayerStack m_LayerStack;
 
 		//ImGuiLayer* m_ImGuiLayer;

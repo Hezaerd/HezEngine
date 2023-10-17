@@ -1,34 +1,152 @@
 -- HezEngine dependencies
+include "./vendor/premake/premake_customization/ordered_pairs.lua"
 
--- Environment variables
+-- Utility function for converting the first char of a string to uppercase
+function firstToUpper(str)
+    return (str:gsub("^%l", string.upper))
+end
+
+-- Get Vulkan SDK path
 VULKAN_SDK = os.getenv("VULKAN_SDK")
 
--- Includes
-IncludeDir = {}
-IncludeDir["Glad"] = "%{wks.location}/HezEngine/vendor/Glad/include"
-IncludeDir["GLFW"] = "%{wks.location}/HezEngine/vendor/GLFW/include"
-IncludeDir["stb_image"] = "%{wks.location}/HezEngine/vendor/stb_image"
-IncludeDir["tinyobjloader"] = "%{wks.location}/HezEngine/vendor/tinyobjloader"
-IncludeDir["ImGui"] = "%{wks.location}/HezEngine/vendor/ImGui"
-IncludeDir["HezMaths"] = "%{wks.location}/HezEngine/vendor/HezMaths"
-IncludeDir["shaderc"] = "%{wks.location}/HezEngine/vendor/shaderc/include"
-IncludeDir["SPIRV_Cross"] = "%{wks.location}/HezEngine/vendor/SPIRV-Cross"
-IncludeDir["VulkanSDK"] = "%{VULKAN_SDK}/Include"
 
--- Libraries directories
-LibraryDir = {}
-LibraryDir["VulkanSDK"] = "%{VULKAN_SDK}/Lib"
+Dependencies = {
+    Vulkan = {
+        Windows = {
+            LibName = "vulkan-1",
+            IncludeDir = "%{VULKAN_SDK}/Include",
+            LibDir = "%{VULKAN_SDK}/Lib/",
+        }
+    },
+    ShaderC = {
+        LibName = "shaderc_shared",
+        IncludeDir = "%{wks.location}/HezEngine/vendor/shaderc/include",
+        Windows = { DebugLibName = "shaderc_sharedd", },
+        Configuratons = "Debug, Release"
+    },
+    ShaderCUtil = {
+        LibName = "shaderc_util",
+        IncludeDir = "%{wks.location}/HezEngine/vendor/shaderc/libshaderc_util/include",
+        Windows = {DebugLibName = "shaderc_utild", },
+        Configuratons = "Debug, Release"
+    },
+    SPIRVCrossCore = {
+		LibName = "spirv-cross-core",
+		Windows = { DebugLibName = "spirv-cross-cored", },
+		Configurations = "Debug,Release"
+	},
+	SPIRVCrossGLSL = {
+		LibName = "spirv-cross-glsl",
+		Windows = { DebugLibName = "spirv-cross-glsld", },
+		Configurations = "Debug,Release"
+	},
+	SPIRVTools = {
+		LibName = "SPIRV-Tools",
+		Windows = { DebugLibName = "SPIRV-Toolsd", },
+		Configurations = "Debug,Release"
+    },
+    GLFW = {
+        LibName = "GLFW",
+        IncludeDir = "%{wks.location}/HezEngine/vendor/GLFW/include",
+    },
+    ImGui = {
+        LibName = "ImGui",
+        IncludeDir = "%{wks.location}/HezEngine/vendor/ImGui",
+    },
+	GLM = {
+		IncludeDir = "%{wks.location}/HezEngine/vendor/glm",
+	},
+    STB_Image = {
+        IncludeDir = "%{wks.location}/HezEngine/vendor/stb_image/include",
+    },
+}
 
--- Library
-Lib = {}
-Lib["Vulkan"] = "%{LibraryDir.VulkanSDK}/vulkan-1.lib"
-Lib["VulkanUtils"] = "%{LibraryDir.VulkanSDK}/VkLayer_utils.lib"
+function LinkDependency(table, is_debug, target)
 
-Lib["ShaderC_Debug"] = "%{LibraryDir.VulkanSDK}/shaderc_sharedd.lib"
-Lib["SPRIV_Cross_Debug"] = "%{LibraryDir.VulkanSDK}/spirv-cross-cored.lib"
-Lib["SPIRV_Cross_GLSL_Debug"] = "%{LibraryDir.VulkanSDK}/spirv-cross-glsld.lib"
-Lib["SPIRV_Tools_Debug"] = "%{LibraryDir.VulkanSDK}/spirv-toolsd.lib"
+    -- Setup lib dir
+    if table.LibDir ~= nil then
+        libdirs { table.LibDir }
+    end
 
-Lib["ShaderC_Release"] = "%{LibraryDir.VulkanSDK}/shaderc_shared.lib"
-Lib["SPRIV_Cross_Release"] = "%{LibraryDir.VulkanSDK}/spirv-cross-core.lib"
-Lib["SPIRV_Cross_GLSL_Release"] = "%{LibraryDir.VulkanSDK}/spirv-cross-glsl.lib"
+    -- Try linking
+    local libraryName = nil
+	if table.LibName ~= nil then
+		libraryName = table.LibName
+	end
+
+	if table.DebugLibName ~= nil and is_debug and target == "Windows" then
+		libraryName = table.DebugLibName
+	end
+
+	if libraryName ~= nil then
+		links { libraryName }
+		return true
+	end
+
+	return false
+end
+
+function AddDependencyIncludes(table)
+	if table.IncludeDir ~= nil then
+		externalincludedirs { table.IncludeDir }
+	end
+end
+
+function ProcessDependencies(config_name)
+    local target = firstToUpper(os.target())
+
+	for key, libraryData in orderedPairs(Dependencies) do
+
+		-- Always match config_name if no Configurations list is specified
+		local matchesConfiguration = true
+
+		if config_name ~= nil and libraryData.Configurations ~= nil then
+			matchesConfiguration = string.find(libraryData.Configurations, config_name)
+		end
+
+		local isDebug = config_name == "Debug"
+
+		if matchesConfiguration then
+			local continueLink = true
+
+			-- Process Platform Scope
+			if libraryData[target] ~= nil then
+				continueLink = not LinkDependency(libraryData[target], isDebug, target)
+				AddDependencyIncludes(libraryData[target])
+			end
+
+			-- Process Global Scope
+			if continueLink then
+				LinkDependency(libraryData, isDebug, target)
+			end
+
+			AddDependencyIncludes(libraryData)
+		end
+
+	end
+end
+
+function IncludeDependencies(config_name)
+	local target = firstToUpper(os.target())
+
+	for key, libraryData in orderedPairs(Dependencies) do
+
+		-- Always match config_name if no Configurations list is specified
+		local matchesConfiguration = true
+
+		if config_name ~= nil and libraryData.Configurations ~= nil then
+			matchesConfiguration = string.find(libraryData.Configurations, config_name)
+		end
+
+		if matchesConfiguration then
+			-- Process Global Scope
+			AddDependencyIncludes(libraryData)
+
+			-- Process Platform Scope
+			if libraryData[target] ~= nil then
+				AddDependencyIncludes(libraryData[target])
+			end
+		end
+
+	end
+end

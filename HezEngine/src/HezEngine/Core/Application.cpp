@@ -49,7 +49,7 @@ namespace HezEngine
 	{
 		while (m_Running)
 		{
-			float time = Time::GetTime();
+			float time = GetTime();
 			Timestep timestep = time - m_LastFrameTime;
 			m_LastFrameTime = time;
 
@@ -67,9 +67,12 @@ namespace HezEngine
 				}
 				m_ImGuiLayer->End();*/
 			}
-
-			m_Window->OnUpdate();
 		}
+	}
+
+	float Application::GetTime()
+	{
+		return (float)glfwGetTime();
 	}
 
 	bool Application::OnWindowClose(WindowCloseEvent& /*pEvent*/)
