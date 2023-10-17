@@ -7,3 +7,4 @@
 [submodule "HezEngine/vendor/ImGui"]
 	path = HezEngine/vendor/ImGui
 	url = https://github.com/Hezaerd/imgui.git
+	branch = docking
