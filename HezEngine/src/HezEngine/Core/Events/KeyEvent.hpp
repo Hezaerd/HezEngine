@@ -2,7 +2,7 @@
 
 #include "hezpch.hpp"
 
-#include "HezEngine/Events/Event.hpp"
+#include "HezEngine/Core/Events/Event.hpp"
 #include "HezEngine/Core/KeyCodes.hpp"
 
 namespace HezEngine
@@ -37,6 +37,7 @@ namespace HezEngine
 		}
 
 		EVENT_CLASS_TYPE(KeyPressed)
+			
 	private:
 		bool m_IsRepeat;
 	};

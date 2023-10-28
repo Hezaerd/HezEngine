@@ -1,7 +1,7 @@
 #pragma once
 
 #include "HezEngine/Core/Base.hpp"
-#include "HezEngine/Events/Event.hpp"
+#include "HezEngine/Core/Events/Event.hpp"
 #include "HezEngine/Core/Timestep.hpp"
 
 namespace HezEngine

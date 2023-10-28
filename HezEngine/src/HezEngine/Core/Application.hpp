@@ -3,7 +3,7 @@
 #include "HezEngine/Core/Base.hpp"
 
 #include "HezEngine/Core/Window.hpp"
-#include "HezEngine/Events/AppEvent.hpp"
+#include "HezEngine/Core/Events/AppEvent.hpp"
 #include "HezEngine/Core/LayerStack.hpp"
 
 #include "HezEngine/Core/Timestep.hpp"

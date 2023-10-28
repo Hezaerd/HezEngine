@@ -1,7 +1,7 @@
 #pragma once
 
 #include "hezpch.hpp"
-#include "HezEngine/Events/Event.hpp"
+#include "HezEngine/Core/Events/Event.hpp"
 
 namespace HezEngine
 {
@@ -22,7 +22,8 @@ namespace HezEngine
 		}
 
 		EVENT_CLASS_TYPE(WindowResize)
-			EVENT_CLASS_CATEGORY(EventCategoryApplication)
+		EVENT_CLASS_CATEGORY(EventCategoryApplication)
+			
 	private:
 		unsigned int m_Width, m_Height;
 	};
@@ -33,6 +34,6 @@ namespace HezEngine
 		WindowCloseEvent() = default;
 
 		EVENT_CLASS_TYPE(WindowClose)
-			EVENT_CLASS_CATEGORY(EventCategoryApplication)
+		EVENT_CLASS_CATEGORY(EventCategoryApplication)
 	};
 }

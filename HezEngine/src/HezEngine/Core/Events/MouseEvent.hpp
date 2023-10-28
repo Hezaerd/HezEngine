@@ -1,9 +1,9 @@
 #pragma once
 
-#include "hezpch.hpp"
+#include "HezEngine/Core/Events/Event.hpp"
+#include "HezEngine/Core/KeyCodes.hpp"
 
-#include "HezEngine/Events/Event.hpp"
-#include "HezEngine/Core/MouseCode.hpp"
+#include <sstream>
 
 namespace HezEngine
 {
@@ -13,8 +13,8 @@ namespace HezEngine
 		MouseMovedEvent(const float x, const float y)
 			: m_MouseX(x), m_MouseY(y) {}
 
-		float GetX() const { return m_MouseX; }
-		float GetY() const { return m_MouseY; }
+		inline float GetX() const { return m_MouseX; }
+		inline float GetY() const { return m_MouseY; }
 
 		std::string ToString() const override
 		{
@@ -24,7 +24,8 @@ namespace HezEngine
 		}
 
 		EVENT_CLASS_TYPE(MouseMoved)
-			EVENT_CLASS_CATEGORY(EventCategoryMouse | EventCategoryInput)
+		EVENT_CLASS_CATEGORY(EventCategoryMouse | EventCategoryInput)
+			
 	private:
 		float m_MouseX, m_MouseY;
 	};
@@ -54,20 +55,20 @@ namespace HezEngine
 	class MouseButtonEvent : public Event
 	{
 	public:
-		MouseCode GetMouseButton() const { return m_Button; }
+		MouseButton GetMouseButton() const { return m_Button; }
 
 		EVENT_CLASS_CATEGORY(EventCategoryMouse | EventCategoryInput | EventCategoryMouseButton)
 	protected:
-		MouseButtonEvent(const MouseCode button)
+		MouseButtonEvent(const MouseButton button)
 			: m_Button(button) {}
 
-		MouseCode m_Button;
+		MouseButton m_Button;
 	};
 
 	class MouseButtonPressedEvent : public MouseButtonEvent
 	{
 	public:
-		MouseButtonPressedEvent(const MouseCode button)
+		MouseButtonPressedEvent(const MouseButton button)
 			: MouseButtonEvent(button) {}
 
 		std::string ToString() const override
@@ -83,7 +84,7 @@ namespace HezEngine
 	class MouseButtonReleasedEvent : public MouseButtonEvent
 	{
 	public:
-		MouseButtonReleasedEvent(const MouseCode button)
+		MouseButtonReleasedEvent(const MouseButton button)
 			: MouseButtonEvent(button) {}
 
 		std::string ToString() const override
