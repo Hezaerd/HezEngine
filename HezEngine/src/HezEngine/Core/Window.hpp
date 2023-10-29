@@ -37,18 +37,20 @@ namespace HezEngine
 
 		inline std::pair<uint32_t, uint32_t> GetSize() const { return { m_Data.Width, m_Data.Height }; }
 		std::pair<float, float> GetWindowPos() const;
+		void SetWindowPos(int pX, int pY) const;
 
 		// Window attributes
-		void SetEventCallback(const EventCallbackFn& pCallback);
+		inline void SetEventCallback(const EventCallbackFn& pCallback) { m_Data.EventCallback = pCallback; }
 		void SetVSync(bool pEnabled);
 		bool IsVSync() const;
 		void SetResizable(bool pResizable) const;
 
-		void Maximize();
-		void CenterWindow();
+		void Maximize() const;
+		void Minimize() const;
+		void CenterWindow() const;
 
 		inline const std::string& GetTitle() const { return m_Data.Title; }
-		void SetTitle(const std::string& pTitle);
+		void SetTitle(const std::string& pTitle) const;
 
 		inline void* GetNativeWindow() const { return m_Window; }
 
