@@ -1,7 +1,8 @@
 #pragma once
 
-#include "hezpch.hpp"
 #include "HezEngine/Core/Events/Event.hpp"
+
+#include <sstream>
 
 namespace HezEngine
 {
@@ -9,17 +10,25 @@ namespace HezEngine
 	{
 	public:
 		WindowResizeEvent(unsigned int pWidth, unsigned int pHeight)
-			: m_Width(pWidth), m_Height(pHeight)
 		{
+			m_PrevWidth = m_Width;
+			m_PrevHeight = m_Height;
+
+			m_Width = pWidth;
+			m_Height = pHeight;
 		}
 
 		inline unsigned int GetWidth() const { return m_Width; }
 		inline unsigned int GetHeight() const { return m_Height; }
 
+		inline unsigned int GetPreviousWidth() const { return m_PrevWidth; }
+		inline unsigned int GetPreviousHeight() const { return m_PrevHeight; }
+
 		std::string ToString() const override
 		{
 			std::stringstream ss;
 			ss << "WindowResizeEvent: " << m_Width << ", " << m_Height;
+			ss << " (Previous: " << m_PrevWidth << ", " << m_PrevHeight << ")";
 			return ss.str();
 		}
 
@@ -28,6 +37,7 @@ namespace HezEngine
 
 	private:
 		unsigned int m_Width, m_Height;
+		unsigned int m_PrevWidth, m_PrevHeight = 0;
 	};
 
 	class WindowMinimizeEvent : public Event
