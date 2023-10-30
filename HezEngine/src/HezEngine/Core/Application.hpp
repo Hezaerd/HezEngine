@@ -10,6 +10,8 @@
 
 #include "HezEngine/ImGui/ImGuiLayer.hpp"
 
+#include <queue>
+
 namespace HezEngine
 {
 	struct ApplicationSpecification
@@ -48,6 +50,30 @@ namespace HezEngine
 		void PopLayer(Layer* pLayer) {};
 		void PopOverlay(Layer* pLayer) {};
 
+		template <typename Func>
+		void QueueEvent(Func&& pFunc)
+		{
+			m_EventQueue.push(pFunc);
+		}
+
+		template<typename TEvent, bool DispatchInstant = false, typename... TEventArgs>
+		void DispatchEvent(TEventArgs&&... args)
+		{
+			// TODO: Switch to HezEngine assert
+			static_assert(std::is_assignable_v<Event, TEvent>);
+
+			Ref<TEvent> event = CreateRef<TEvent>(std::forward<TEventArgs>(args)...);
+			if constexpr (DispatchInstant)
+			{
+				OnEvent(*event);
+			}
+			else
+			{
+				std::scoped_lock<std::mutex> lock(m_EventQueueMutex);
+				m_EventQueue.push([event]() {Application::Get().OnEvent(*event); });
+			}
+		}
+
 		static inline Application& Get() { return *s_Instance; }
 		inline Window& GetWindow() { return *m_Window; }
 
@@ -73,6 +99,12 @@ namespace HezEngine
 		Timestep m_FrameTime;
 		Timestep m_TimeStep;
 		float m_LastFrameTime = 0.0f;
+		int m_FrameCounter = 0;
+
+		// Events
+		std::mutex m_EventQueueMutex;
+		std::queue<std::function<void()>> m_EventQueue;
+		std::vector<EventCallbackFn> m_EventCallbacks;
 
 	private:
 		static Application* s_Instance;

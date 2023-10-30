@@ -31,13 +31,13 @@ namespace HezEngine
 		windowSpec.VSync = pSpecification.VSync;
 		m_Window = Window::Create(windowSpec);
 		m_Window->Init();
-		m_Window->SetEventCallback(BIND_EVENT_FN(Application::OnEvent));
+		m_Window->SetEventCallback([this](Event& e) {OnEvent(e); });
 
 		if (pSpecification.StartMaximized)
 			m_Window->Maximize();
-		else
-			m_Window->CenterWindow();
-		m_Window->SetResizable(pSpecification.Resizable);
+		//else
+		m_Window->CenterWindow();
+		//m_Window->SetResizable(pSpecification.Resizable);
 	}
 
 	Application::~Application()
@@ -77,13 +77,6 @@ namespace HezEngine
 					for (Layer* layer : m_LayerStack)
 						layer->OnUpdate(timestep);
 				}
-
-				/*m_ImGuiLayer->Begin();
-				{
-					for (Layer* layer : m_LayerStack)
-						layer->OnImGuiRender();
-				}
-				m_ImGuiLayer->End();*/
 			}
 		}
 
@@ -110,14 +103,27 @@ namespace HezEngine
 
 	void Application::OnEvent(Event& pEvent)
 	{
+		HEZ_CORE_INFO_TAG("Events", pEvent.ToString());
+
 		EventDispatcher eventHandler(pEvent);
-		eventHandler.Dispatch<WindowResizeEvent>(BIND_EVENT_FN(Application::OnWindowResize));
-		eventHandler.Dispatch<WindowMinimizeEvent>(BIND_EVENT_FN(Application::OnWindowMinimize));
-		eventHandler.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(Application::OnWindowClose));
+		eventHandler.Dispatch<WindowResizeEvent>([this](WindowResizeEvent& e) {return OnWindowResize(e); });
+		eventHandler.Dispatch<WindowMinimizeEvent>([this](WindowMinimizeEvent& e) {return OnWindowMinimize(e); });
+		eventHandler.Dispatch<WindowCloseEvent>([this](WindowCloseEvent& e) {return OnWindowClose(e); });
 
 		for (auto it = m_LayerStack.end(); it != m_LayerStack.begin();)
 		{
 			(*--it)->OnEvent(pEvent);
+			if (pEvent.Handled)
+				break;
+		}
+
+		if (pEvent.Handled)
+			return;
+
+		for (auto& eventCallback : m_EventCallbacks)
+		{
+			eventCallback(pEvent);
+
 			if (pEvent.Handled)
 				break;
 		}
