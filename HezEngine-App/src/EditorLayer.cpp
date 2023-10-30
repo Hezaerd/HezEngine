@@ -1,24 +1,27 @@
 #include "EditorLayer.hpp"
 
-EditorLayer::EditorLayer()
-	: Layer("EditorLayer")
+namespace HezEngine
 {
-}
+	EditorLayer::EditorLayer()
+		: Layer("EditorLayer")
+	{
+	}
 
-void EditorLayer::OnAttach()
-{
-	HEZ_INFO("Layer {0} attached", GetName());
-}
+	void EditorLayer::OnAttach()
+	{
+		HEZ_INFO("Layer {0} attached", GetName());
+	}
 
-void EditorLayer::OnDetach()
-{
-	HEZ_INFO("Layer {0} detached", GetName());
-}
+	void EditorLayer::OnDetach()
+	{
+		HEZ_INFO("Layer {0} detached", GetName());
+	}
 
-void EditorLayer::OnUpdate(HezEngine::Timestep /*pStep*/)
-{
-}
+	void EditorLayer::OnUpdate(HezEngine::Timestep /*pStep*/)
+	{
+	}
 
-void EditorLayer::OnEvent(HezEngine::Event& /*pEvent*/)
-{
+	void EditorLayer::OnEvent(HezEngine::Event& /*pEvent*/)
+	{
+	}
 }

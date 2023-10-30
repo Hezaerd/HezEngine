@@ -1,17 +1,20 @@
 #pragma once
 
-#include <HezEngine.hpp>
+#include "HezEngine.hpp"
 
-class EditorLayer : public HezEngine::Layer
+namespace HezEngine
 {
-public:
-	EditorLayer();
+	class EditorLayer : public Layer
+	{
+	public:
+		EditorLayer();
 
-	void OnAttach() override;
-	void OnDetach() override;
+		void OnAttach() override;
+		void OnDetach() override;
 
-	void OnUpdate(HezEngine::Timestep pStep) override;
-	void OnEvent(HezEngine::Event& pEvent) override;
+		void OnUpdate(Timestep pStep) override;
+		void OnEvent(Event& pEvent) override;
 
-private:
-};
+	private:
+	};
+}

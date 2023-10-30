@@ -9,10 +9,12 @@ namespace HezEngine
 	{
 	public:
 		WindowResizeEvent(unsigned int pWidth, unsigned int pHeight)
-			: m_Width(pWidth), m_Height(pHeight) {}
+			: m_Width(pWidth), m_Height(pHeight)
+		{
+		}
 
-		unsigned int GetWidth() const { return m_Width; }
-		unsigned int GetHeight() const { return m_Height; }
+		inline unsigned int GetWidth() const { return m_Width; }
+		inline unsigned int GetHeight() const { return m_Height; }
 
 		std::string ToString() const override
 		{
@@ -22,10 +24,34 @@ namespace HezEngine
 		}
 
 		EVENT_CLASS_TYPE(WindowResize)
-		EVENT_CLASS_CATEGORY(EventCategoryApplication)
-			
+			EVENT_CLASS_CATEGORY(EventCategoryApplication)
+
 	private:
 		unsigned int m_Width, m_Height;
+	};
+
+	class WindowMinimizeEvent : public Event
+	{
+	public:
+		WindowMinimizeEvent(bool pMinimized)
+			: m_Minimized(pMinimized)
+		{
+		}
+
+		inline bool IsMinimized() const { return m_Minimized; }
+
+		std::string ToString() const override
+		{
+			std::stringstream ss;
+			ss << "WindowMinimizeEvent: " << m_Minimized;
+			return ss.str();
+		}
+
+		EVENT_CLASS_TYPE(WindowMinimize)
+			EVENT_CLASS_CATEGORY(EventCategoryApplication)
+
+	private:
+		bool m_Minimized = false;
 	};
 
 	class WindowCloseEvent : public Event
@@ -33,7 +59,14 @@ namespace HezEngine
 	public:
 		WindowCloseEvent() = default;
 
+		std::string ToString() const override
+		{
+			std::stringstream ss;
+			ss << "WindowCloseEvent";
+			return ss.str();
+		}
+
 		EVENT_CLASS_TYPE(WindowClose)
-		EVENT_CLASS_CATEGORY(EventCategoryApplication)
+			EVENT_CLASS_CATEGORY(EventCategoryApplication)
 	};
 }

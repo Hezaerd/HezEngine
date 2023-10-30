@@ -17,9 +17,9 @@ namespace HezEngine
 
 	static bool s_GLFWInitialized = false;
 
-	Window* Window::Create(const WindowSpecification& pSpecification)
+	Scope<Window> Window::Create(const WindowSpecification& pSpecification)
 	{
-		return new Window(pSpecification);
+		return CreateScope<Window>(pSpecification);
 	}
 
 	Window::Window(const WindowSpecification& pSpecification)

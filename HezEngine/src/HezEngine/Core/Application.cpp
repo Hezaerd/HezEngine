@@ -2,34 +2,50 @@
 #include "HezEngine/Core/Application.hpp"
 #include "HezEngine/Core/Debug/Debug.hpp"
 
+#include "HezEngine/Core/Input.hpp"
+
+#include <filesystem>
+
+extern bool g_ApplicationRunning;
+
 namespace HezEngine
 {
+#define BIND_EVENT_FN(fn) std::bind(&Application::##fn, this, std::placeholders::_1)
+
 	Application* Application::s_Instance = nullptr;
 
-	Application::Application()
+	Application::Application(const ApplicationSpecification& pSpecification)
+		: m_Specification(pSpecification)
 	{
 		HEZ_CORE_ASSERT(!s_Instance, "Application already exists!");
 		s_Instance = this;
 
-		m_Window = Window::Create();
-		m_Window->SetEventCallback(HEZ_BIND_EVENT_FN(Application::OnEvent));
+		if (!pSpecification.WorkingDirectory.empty())
+			std::filesystem::current_path(pSpecification.WorkingDirectory);
+
+		WindowSpecification windowSpec;
+		windowSpec.Title = pSpecification.Name;
+		windowSpec.Width = pSpecification.WindowWidth;
+		windowSpec.Height = pSpecification.WindowHeight;
+		windowSpec.Fullscreen = pSpecification.Fullscreen;
+		windowSpec.VSync = pSpecification.VSync;
+		m_Window = Window::Create(windowSpec);
+		m_Window->Init();
+		m_Window->SetEventCallback(BIND_EVENT_FN(Application::OnEvent));
+
+		if (pSpecification.StartMaximized)
+			m_Window->Maximize();
+		else
+			m_Window->CenterWindow();
+		m_Window->SetResizable(pSpecification.Resizable);
 	}
 
 	Application::~Application()
 	{
-	}
-
-	void Application::OnEvent(Event& pEvent)
-	{
-		EventDispatcher eventHandler(pEvent);
-		eventHandler.Dispatch<WindowCloseEvent>(HEZ_BIND_EVENT_FN(Application::OnWindowClose));
-		eventHandler.Dispatch<WindowResizeEvent>(HEZ_BIND_EVENT_FN(Application::OnWindowResize));
-
-		for (auto it = m_LayerStack.end(); it != m_LayerStack.begin();)
+		for (Layer* layer : m_LayerStack)
 		{
-			(*--it)->OnEvent(pEvent);
-			if (pEvent.Handled)
-				break;
+			layer->OnDetach();
+			delete layer;
 		}
 	}
 
@@ -47,6 +63,8 @@ namespace HezEngine
 
 	void Application::Run()
 	{
+		OnInit();
+
 		while (m_Running)
 		{
 			float time = GetTime();
@@ -68,11 +86,57 @@ namespace HezEngine
 				m_ImGuiLayer->End();*/
 			}
 		}
+
+		OnShutdown();
 	}
 
-	float Application::GetTime()
+	void Application::Close()
 	{
-		return (float)glfwGetTime();
+		m_Running = false;
+	}
+
+	void Application::OnShutdown()
+	{
+		g_ApplicationRunning = false;
+	}
+
+	void Application::ProcessEvents()
+	{
+		Input::TransitionPressedKeys();
+		Input::TransitionPressedButtons();
+
+		m_Window->ProcessEvents();
+	}
+
+	void Application::OnEvent(Event& pEvent)
+	{
+		EventDispatcher eventHandler(pEvent);
+		eventHandler.Dispatch<WindowResizeEvent>(BIND_EVENT_FN(Application::OnWindowResize));
+		eventHandler.Dispatch<WindowMinimizeEvent>(BIND_EVENT_FN(Application::OnWindowMinimize));
+		eventHandler.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(Application::OnWindowClose));
+
+		for (auto it = m_LayerStack.end(); it != m_LayerStack.begin();)
+		{
+			(*--it)->OnEvent(pEvent);
+			if (pEvent.Handled)
+				break;
+		}
+	}
+
+	bool Application::OnWindowResize(WindowResizeEvent& pEvent)
+	{
+		if (pEvent.GetWidth() == 0 || pEvent.GetHeight() == 0)
+		{
+			return false;
+		}
+
+		return false;
+	}
+
+	bool Application::OnWindowMinimize(WindowMinimizeEvent& pEvent)
+	{
+		m_Minimized = pEvent.IsMinimized();
+		return false;
 	}
 
 	bool Application::OnWindowClose(WindowCloseEvent& /*pEvent*/)
@@ -83,15 +147,8 @@ namespace HezEngine
 		return true;
 	}
 
-	bool Application::OnWindowResize(WindowResizeEvent& pEvent)
+	float Application::GetTime()
 	{
-		if (pEvent.GetWidth() == 0 || pEvent.GetHeight() == 0)
-		{
-			m_Minimized = true;
-			return false;
-		}
-
-		m_Minimized = false;
-		return false;
+		return (float)glfwGetTime();
 	}
 }

@@ -2,14 +2,24 @@
 
 #include "HezEngine/Core/Base.hpp"
 #include "HezEngine/Core/Debug/Log.hpp"
-#include <filesystem>
 
-#define HEZ_INTERNAL_ASSERT_IMPL(type, check, msg, ...) { if(!(check)) { HEZ##type##ERROR(msg, __VA_ARGS__); HEZ_DEBUGBREAK(); } }
-#define HEZ_INTERNAL_ASSERT_WITH_MSG(type, check, ...) HEZ_INTERNAL_ASSERT_IMPL(type, check, "Assertion failed: {0}", __VA_ARGS__)
-#define HEZ_INTERNAL_ASSERT_NO_MSG(type, check) HEZ_INTERNAL_ASSERT_IMPL(type, check, "Assertion '{0}' failed at {1}:{2}", HEZ_STRINGIFY_MACRO(check), std::filesystem::path(__FILE__).filename().string(), __LINE__)
+#ifdef HEZ_PLATFORM_WINDOWS
+#define HEZ_DEBUGBREAK() __debugbreak()
+#else
+#define HEZ_DEBUGBREAK()
+#endif
 
-#define HEZ_INTERNAL_ASSERT_GET_MACRO_NAME(arg1, arg2, macro, ...) macro
-#define HEZ_INTERNAL_ASSERT_GET_MACRO(...) HEZ_EXPAND_MACRO( HEZ_INTERNAL_ASSERT_GET_MACRO_NAME(__VA_ARGS__, HEZ_INTERNAL_ASSERT_WITH_MSG, HEZ_INTERNAL_ASSERT_NO_MSG) )
+#ifdef HEZ_DEBUG
+#define HEZ_ENABLE_ASSERTS
+#endif
 
-#define HEZ_ASSERT(...) HEZ_EXPAND_MACRO( HEZ_INTERNAL_ASSERT_GET_MACRO(__VA_ARGS__)(_, __VA_ARGS__) )
-#define HEZ_CORE_ASSERT(...) HEZ_EXPAND_MACRO( HEZ_INTERNAL_ASSERT_GET_MACRO(__VA_ARGS__)(_CORE_, __VA_ARGS__) )
+#ifdef HEZ_ENABLE_ASSERTS
+#define HEZ_CORE_ASSERT_MESSAGE_INTERNAL(...) ::HezEngine::Log::PrintAssertMessage(::HezEngine::Log::Type::Core, "Assertion failed" __VA_OPT__(,) __VA_ARGS__)
+#define HEZ_ASSERT_MESSAGE_INTERNAL(...) ::HezEngine::Log::PrintAssertMessage(::HezEngine::Log::Type::Client, "Assertion failed" __VA_OPT__(,) __VA_ARGS__)
+
+#define HEZ_CORE_ASSERT(condition, ...) {if(!(condition)) { HEZ_CORE_ASSERT_MESSAGE_INTERNAL(__VA_ARGS__); HEZ_DEBUGBREAK(); }}
+#define HEZ_ASSERT(condition, ...) {if(!(condition)) {HEZ_ASSERT_MESSAGE_INTERNAL(__VA_ARGS__); HEZ_DEBUGBREAK(); }}
+#else
+#define HEZ_CORE_ASSERT(condition, ...)
+#define HEZ_ASSERT(condition, ...)
+#endif

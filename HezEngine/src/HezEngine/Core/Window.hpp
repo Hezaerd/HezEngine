@@ -55,7 +55,7 @@ namespace HezEngine
 		inline void* GetNativeWindow() const { return m_Window; }
 
 	public:
-		static Window* Create(const WindowSpecification& pSpecification = WindowSpecification());
+		static Scope<Window> Create(const WindowSpecification& pSpecification = WindowSpecification());
 
 	private:
 		void Shutdown();

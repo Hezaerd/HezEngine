@@ -9,7 +9,7 @@ namespace HezEngine
 	{
 		None = 0,
 		// Window events
-		WindowClose, WindowResize,
+		WindowClose, WindowMinimize, WindowResize,
 		// Keyboard events
 		KeyPressed, KeyReleased, KeyTyped,
 		// Mouse events

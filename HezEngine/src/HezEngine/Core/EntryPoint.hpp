@@ -1,17 +1,30 @@
 #pragma once
 
-#include "HezEngine/Core/Base.hpp"
 #include "HezEngine/Core/Application.hpp"
 
-extern HezEngine::Application* HezEngine::CreateApplication();
+extern HezEngine::Application* HezEngine::CreateApplication(int argc, char** argv);
+bool g_ApplicationRunning = true;
 
-int main(int /*argc*/, char** /*argv*/)
+namespace HezEngine
 {
-	HezEngine::Log::Init();
-	HEZ_CORE_WARN("Initialized Log!");
+	int Main(int argc, char** argv)
+	{
+		while (g_ApplicationRunning)
+		{
+			InitializeCore();
 
-	auto app = HezEngine::CreateApplication();
-	app->Run();
-	delete app;
-	HEZ_CORE_FATAL("Application destroyed.");
+			Application* app = CreateApplication(argc, argv);
+			HEZ_CORE_ASSERT(app, "Client application is null!");
+			app->Run();
+			delete app;
+			
+			ShutdownCore();
+		}
+		return 0;
+	}
+}
+
+int main(int argc, char** argv)
+{
+	return HezEngine::Main(argc, argv);
 }
