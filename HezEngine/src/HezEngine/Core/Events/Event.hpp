@@ -62,9 +62,11 @@ namespace HezEngine
 		template<typename T, typename F>
 		bool Dispatch(const F& pFunc)
 		{
-			if (m_Event.GetEventType() == T::GetStaticType())
+			if (m_Event.GetEventType() == T::GetStaticType() && !m_Event.Handled)
 			{
-				m_Event.Handled = pFunc(static_cast<T&>(m_Event));
+				HEZ_CORE_TRACE_TAG("Events", "Dispatching event {0}", m_Event.ToString());
+
+				m_Event.Handled = pFunc(*(T*)&m_Event);
 				return true;
 			}
 			return false;
