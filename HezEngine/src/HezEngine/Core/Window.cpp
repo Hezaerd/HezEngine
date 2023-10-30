@@ -38,7 +38,7 @@ namespace HezEngine
 		m_Data.Width = m_Specification.Width;
 		m_Data.Height = m_Specification.Height;
 
-		HEZ_CORE_INFO_TAG("GLFW", "Creating window {0} ({1}, {2}", m_Specification.Title, m_Specification.Width, m_Specification.Height);
+		HEZ_CORE_INFO_TAG("GLFW", "Creating window {0} ({1}, {2})", m_Specification.Title, m_Specification.Width, m_Specification.Height);
 
 		if (!s_GLFWInitialized)
 		{
@@ -82,6 +82,8 @@ namespace HezEngine
 
 		glfwSetWindowSizeCallback(m_Window, [](GLFWwindow* pWindow, int pWidth, int pHeight)
 		{
+			HEZ_CORE_TRACE_TAG("GLFW Events", "Window resized to {0}x{1}", pWidth, pHeight);
+
 			auto& data = *((WindowData*)glfwGetWindowUserPointer(pWindow));
 
 			WindowResizeEvent event((uint32_t)pWidth, (uint32_t)pHeight);
@@ -92,6 +94,8 @@ namespace HezEngine
 
 		glfwSetWindowCloseCallback(m_Window, [](GLFWwindow* pWindow)
 		{
+			HEZ_CORE_TRACE_TAG("GLFW Events", "Window closed");
+
 			auto& data = *((WindowData*)glfwGetWindowUserPointer(pWindow));
 
 			WindowCloseEvent event;
@@ -100,6 +104,8 @@ namespace HezEngine
 
 		glfwSetKeyCallback(m_Window, [](GLFWwindow* pWindow, int pKey, int pScancode, int pAction, int pMods)
 		{
+			HEZ_CORE_TRACE_TAG("GLFW Events", "Key {0} ({1}) {2}", pKey, pScancode, pAction);
+
 			auto& data = *((WindowData*)glfwGetWindowUserPointer(pWindow));
 
 			switch (pAction)
@@ -138,6 +144,8 @@ namespace HezEngine
 
 		glfwSetMouseButtonCallback(m_Window, [](GLFWwindow* pWindow, int pButton, int pAction, int pMods)
 		{
+			HEZ_CORE_TRACE_TAG("GLFW Events", "Mouse button {0} {1}", pButton, pAction);
+
 			auto& data = *((WindowData*)glfwGetWindowUserPointer(pWindow));
 
 			switch (pAction)
@@ -198,6 +206,8 @@ namespace HezEngine
 
 	void Window::SetWindowPos(int pX, int pY) const
 	{
+		HEZ_CORE_ASSERT(m_Window, "Window is null!");
+
 		glfwSetWindowPos(m_Window, pX, pY);
 	}
 
@@ -233,16 +243,22 @@ namespace HezEngine
 
 	void Window::SetResizable(bool pResizable) const
 	{
+		HEZ_CORE_ASSERT(m_Window, "Window is null!");
+
 		glfwSetWindowAttrib(m_Window, GLFW_RESIZABLE, pResizable ? GLFW_TRUE : GLFW_FALSE);
 	}
 
 	void Window::Maximize() const
 	{
+		HEZ_CORE_ASSERT(m_Window, "Window is null!");
+
 		glfwMaximizeWindow(m_Window);
 	}
 
 	void Window::Minimize() const
 	{
+		HEZ_CORE_ASSERT(m_Window, "Window is null!");
+
 		glfwIconifyWindow(m_Window);
 	}
 
