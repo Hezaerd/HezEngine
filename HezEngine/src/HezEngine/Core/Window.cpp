@@ -84,7 +84,8 @@ namespace HezEngine
 		{
 			HEZ_CORE_TRACE_TAG("GLFW Events", "Window resized to {0}x{1}", pWidth, pHeight);
 
-			auto& data = *((WindowData*)glfwGetWindowUserPointer(pWindow));
+			//auto& data = *((WindowData*)glfwGetWindowUserPointer(pWindow));
+			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(pWindow);
 
 			WindowResizeEvent event((uint32_t)pWidth, (uint32_t)pHeight);
 			data.EventCallback(event);

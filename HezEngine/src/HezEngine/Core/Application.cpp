@@ -33,11 +33,11 @@ namespace HezEngine
 		m_Window->Init();
 		m_Window->SetEventCallback([this](Event& e) {OnEvent(e); });
 
-		if (pSpecification.StartMaximized)
-			m_Window->Maximize();
-		//else
+		/*if (pSpecification.StartMaximized)
+			m_Window->Maximize();*/
+			//else
 		m_Window->CenterWindow();
-		//m_Window->SetResizable(pSpecification.Resizable);
+		m_Window->SetResizable(pSpecification.Resizable);
 	}
 
 	Application::~Application()
