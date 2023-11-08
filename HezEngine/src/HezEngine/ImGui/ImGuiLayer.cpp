@@ -3,7 +3,7 @@
 
 #include "HezEngine/ImGui/Color.hpp"
 
-#include "HezEngine/Renderer/Renderer.hpp"
+#include "HezEngine/Renderer/RendererAPI.hpp"
 
 #include <imgui.h>
 
@@ -11,10 +11,9 @@ namespace HezEngine
 {
 	ImGuiLayer* ImGuiLayer::Create()
 	{
-		switch (Renderer::GetAPI())
+		switch (RendererAPI::Current())
 		{
-		case RendererAPI::API::None: HEZ_CORE_ASSERT(false, "RendererAPI::None is currently not supported!"); return nullptr;
-			//case RendererAPI::API::Vulkan:
+			case RendererAPIType::None: HEZ_CORE_ASSERT(false, "RendererAPI::None is currently not supported!"); return nullptr;
 		}
 	}
 

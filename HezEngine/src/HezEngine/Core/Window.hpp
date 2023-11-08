@@ -36,8 +36,8 @@ namespace HezEngine
 		inline uint32_t GetHeight() { return m_Data.Height; }
 
 		inline std::pair<uint32_t, uint32_t> GetSize() const { return { m_Data.Width, m_Data.Height }; }
-		std::pair<float, float> GetWindowPos() const;
-		void SetWindowPos(int pX, int pY) const;
+		std::pair<float, float> GetPosisiton() const;
+		void SetPosition(int pX, int pY) const;
 
 		// Window attributes
 		inline void SetEventCallback(const EventCallbackFn& pCallback) { m_Data.EventCallback = pCallback; }

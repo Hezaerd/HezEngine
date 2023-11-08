@@ -6,7 +6,8 @@
 #include "HezEngine/Core/Events/MouseEvent.hpp"
 #include "HezEngine/Core/Input.hpp"
 
-#include "HezEngine/Renderer/Renderer.hpp"
+//#include "HezEngine/Renderer/Renderer.hpp"
+#include "HezEngine/Renderer/RendererAPI.hpp"
 
 namespace HezEngine
 {
@@ -49,7 +50,7 @@ namespace HezEngine
 			s_GLFWInitialized = true;
 		}
 
-		if (Renderer::GetAPI() == RendererAPI::API::Vulkan)
+		if (RendererAPI::Current() == RendererAPIType::Vulkan)
 			glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
 
 		if (m_Specification.Fullscreen)
@@ -198,14 +199,14 @@ namespace HezEngine
 		s_GLFWInitialized = false;
 	}
 
-	std::pair<float, float> Window::GetWindowPos() const
+	std::pair<float, float> Window::GetPosisiton() const
 	{
 		int x, y;
 		glfwGetWindowPos(m_Window, &x, &y);
 		return { (float)x, (float)y };
 	}
 
-	void Window::SetWindowPos(int pX, int pY) const
+	void Window::SetPosition(int pX, int pY) const
 	{
 		HEZ_CORE_ASSERT(m_Window, "Window is null!");
 
@@ -270,7 +271,7 @@ namespace HezEngine
 		int x = (mode->width / 2) - (m_Data.Width / 2);
 		int y = (mode->height / 2) - (m_Data.Height / 2);
 
-		SetWindowPos(x, y);
+		SetPosition(x, y);
 	}
 
 	void Window::SetTitle(const std::string& pTitle) const
