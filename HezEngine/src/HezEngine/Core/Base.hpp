@@ -2,6 +2,12 @@
 
 #include <memory>
 
+#ifdef HEZ_PLATFORM_WINDOWS
+#define HEZ_DEBUGBREAK() __debugbreak()
+#else
+#define HEZ_DEBUGBREAK()
+#endif
+
 #define HEZ_EXPAND_MACRO(x) x
 #define HEZ_STRINGIFY_MACRO(x) #x
 

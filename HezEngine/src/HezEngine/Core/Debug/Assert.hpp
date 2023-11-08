@@ -3,12 +3,6 @@
 #include "HezEngine/Core/Base.hpp"
 #include "HezEngine/Core/Debug/Log.hpp"
 
-#ifdef HEZ_PLATFORM_WINDOWS
-#define HEZ_DEBUGBREAK() __debugbreak()
-#else
-#define HEZ_DEBUGBREAK()
-#endif
-
 #ifdef HEZ_DEBUG
 #define HEZ_ENABLE_ASSERTS
 #endif
