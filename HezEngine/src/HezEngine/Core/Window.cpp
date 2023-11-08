@@ -250,6 +250,7 @@ namespace HezEngine
 		glfwSetWindowAttrib(m_Window, GLFW_RESIZABLE, pResizable ? GLFW_TRUE : GLFW_FALSE);
 	}
 
+	// FIXME: crash
 	void Window::Maximize() const
 	{
 		HEZ_CORE_ASSERT(m_Window, "Window is null!");
