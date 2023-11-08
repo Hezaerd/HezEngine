@@ -17,14 +17,14 @@ namespace HezEngine
 			m_StartTimepoint = std::chrono::high_resolution_clock::now();
 		}
 
-		float Elasped()
+		float Elapsed()
 		{
 			return std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::high_resolution_clock::now() - m_StartTimepoint).count() * 0.001f * 0.001f * 0.001f;
 		}
 
 		float ElapsedMillis()
 		{
-			return Elasped() * 1000.0f;
+			return Elapsed() * 1000.0f;
 		}
 
 	private:
