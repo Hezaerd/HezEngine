@@ -9,6 +9,8 @@ namespace HezEngine
 	public:
 		Color();
 		Color(uint8_t pR, uint8_t pG, uint8_t pB, uint8_t pA = 255);
+		Color(const Color& pOther);
+		Color(Color&& pOther) noexcept;
 
 		std::string toString() const;
 

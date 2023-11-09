@@ -15,6 +15,22 @@ namespace HezEngine
 	{
 	}
 
+	Color::Color(const Color& pOther)
+	{
+		r = pOther.r;
+		g = pOther.g;
+		b = pOther.b;
+		a = pOther.a;
+	}
+
+	Color::Color(Color&& pOther) noexcept
+	{
+		r = pOther.r;
+		g = pOther.g;
+		b = pOther.b;
+		a = pOther.a;
+	}
+
 	std::string Color::toString() const
 	{
 		std::stringstream ss;
