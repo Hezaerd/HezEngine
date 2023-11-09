@@ -15,8 +15,6 @@ namespace HezEngine
 		int g = (pHex >> 8) & 0xFF;
 		int b = pHex & 0xFF;
 
-		Color color(r, g, b, 255);
-		HEZ_CORE_INFO_TAG("ColorUtils", "FromHex(const int): {0}", color.toString());
 		return Color(r, g, b, 255);;
 	}
 
@@ -27,8 +25,6 @@ namespace HezEngine
 		int g = (pHex >> 8) & 0xFF;
 		int b = pHex & 0xFF;
 
-		Color color(r, g, b, a);
-		HEZ_CORE_INFO_TAG("ColorUtils", "FromHex(const long): {0}", color.toString());
 		return Color(r, g, b, a);
 	}
 
@@ -41,5 +37,22 @@ namespace HezEngine
 			return FromHex(std::stoi(pHex, nullptr, 16));
 
 		return FromHex(std::stoul(pHex, nullptr, 16));
+	}
+
+	Color ColorUtils::Lerp(const Color pA, const Color pB, float pT)
+	{
+		if (pT < 0.0f)
+			pT = 0.0f;
+		else if (pT > 1.0f)
+			pT = 1.0f;
+
+		float r = pA.r + (pB.r - pA.r) * pT;
+		float g = pA.g + (pB.g - pA.g) * pT;
+		float b = pA.b + (pB.b - pA.b) * pT;
+		float a = pA.a + (pB.a - pA.a) * pT;
+
+		Color color(r, g, b, a);
+		HEZ_CORE_INFO_TAG("ColorUtils", "Lerp(const Color, const Color, float): {0}", color.ToString());
+		return Color(r, g, b, a);
 	}
 }
