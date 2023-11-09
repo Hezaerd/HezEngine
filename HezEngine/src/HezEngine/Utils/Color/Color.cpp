@@ -42,51 +42,6 @@ namespace HezEngine
 		return *this;
 	}
 
-	Color& Color::operator+=(const Color& pOther)
-	{
-		r += pOther.r;
-		g += pOther.g;
-		b += pOther.b;
-		a += pOther.a;
-
-		return *this;
-	}
-
-	Color& Color::operator-=(const Color& pOther)
-	{
-		r -= pOther.r;
-		g -= pOther.g;
-		b -= pOther.b;
-		a -= pOther.a;
-
-		return *this;
-	}
-
-	Color& Color::operator*=(const Color& pOther)
-	{
-		r *= pOther.r;
-		g *= pOther.g;
-		b *= pOther.b;
-		a *= pOther.a;
-
-		return *this;
-	}
-
-	Color Color::operator+(const Color& pOther) const
-	{
-		return Color(r + pOther.r, g + pOther.g, b + pOther.b, a + pOther.a);
-	}
-
-	Color Color::operator-(const Color& pOther) const
-	{
-		return Color(r - pOther.r, g - pOther.g, b - pOther.b, a - pOther.a);
-	}
-
-	Color Color::operator*(const Color& pOther) const
-	{
-		return Color(r * pOther.r, g * pOther.g, b * pOther.b, a * pOther.a);
-	}
-
 	const Color Color::Black = Color(0, 0, 0);
 	const Color Color::White = Color(255, 255, 255);
 	const Color Color::Red = Color(255, 0, 0);
