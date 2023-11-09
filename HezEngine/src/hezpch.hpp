@@ -1,6 +1,6 @@
 #pragma once
 
-#ifdef MGL_PLATFORM_WINDOW
+#ifdef HEZ_PLATFORM_WINDOWS
 #ifndef NOMINMAX
 #define NOMINMAX
 #endif
@@ -14,6 +14,6 @@
 
 #include "HezEngine/Core/Base.hpp"
 
-#ifdef MGL_PLATFORM_WINDOW
+#ifdef HEZ_PLATFORM_WINDOWS
 #include <Windows.h>
 #endif
