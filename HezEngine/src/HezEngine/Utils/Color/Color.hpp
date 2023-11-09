@@ -12,7 +12,7 @@ namespace HezEngine
 		Color(const Color& pOther);
 		Color(Color&& pOther) noexcept;
 
-		std::string toString() const;
+		std::string ToString() const;
 
 	public:
 		Color& operator=(const Color& pOther);

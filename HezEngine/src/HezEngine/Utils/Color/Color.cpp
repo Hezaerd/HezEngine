@@ -31,7 +31,7 @@ namespace HezEngine
 		a = pOther.a;
 	}
 
-	std::string Color::toString() const
+	std::string Color::ToString() const
 	{
 		std::stringstream ss;
 		ss << "Color(" << (int)r << "R, " << (int)g << "G, " << (int)b << "B, " << (int)a << "A)";
