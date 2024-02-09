@@ -1,5 +1,4 @@
 # Binaries
-
 build/
 **/bin/
 !vendor/premake/bin
@@ -9,7 +8,6 @@ Intermediates/
 
 
 # Visual Studio files and folder
-
 .vs/
 **.sln
 **.vcxproj
@@ -18,6 +16,10 @@ Intermediates/
 ### Known bug from VS2022 < 17.4.5
 JSON/
 
+
+
+# JetBrain Rider files and folder
+.idea/
 
 
 # Python cache
